@@ -1,39 +1,30 @@
 const {DebuggerAPI} = require("./src/DebuggerAPI");
-const api = new DebuggerAPI({processId: '8b4f3a19-948b-4b6b-ac8b-366e7067e77'})
-api.initClient()
+const api = new DebuggerAPI({url: process.env.DEBUGGER_FULL_URL});
 
-const currentStack = {}
-
-api.client.on('open', function open() {
+(async function () {
+    await api.initClient()
     api.enable()
-    api.setBreakpoint(11)
-    api.continue()
-});
+    // await api.setBreakpoint(11)
+    // await api.continue()
+    // const sourceCode = await api.getScriptCode()
+    // console.log(sourceCode)
+    // const result = await api.getObject("{\"injectedScriptId\":1,\"id\":1}");
+    // console.log(result)
+})();
 
-api.client.on('message', function incoming(data) {
-    console.log(data)
+api.client.on('message', async (buffer) => {
+    const data = JSON.parse(buffer)
 
-    const parsedData = JSON.parse(data)
-    if(parsedData.method === 'Debugger.scriptParsed' && parsedData.params.url.includes('test.js')){
-        console.log("scriptId: ", parsedData.params.scriptId)
-        currentStack[parsedData.params.hash] = {
-            ...parsedData.params
-        }
+    const sourceCodeId = api.getSourceCodeId(data);
+
+    if (sourceCodeId) {
+        const res = await api.getScriptCode(sourceCodeId)
+        const lineIndex = res.result.scriptSource
+            .split('\n')
+            .findIndex(line => line.includes('// -- START DEBUGGER -- //'));
+         await api.setBreakpoint(lineIndex+1)
+
+        const codePaused = await api.continue();
+        console.log(codePaused)
     }
-
-    if (parsedData.result){
-        // console.log(parsedData.result)
-    }
-
-
-    if (parsedData.error) {
-        console.log(JSON.stringify(parsedData.error, null, 2))
-    }
-
-    if (parsedData.method === 'Debugger.paused'){
-        console.log(JSON.stringify(parsedData, null, 2))
-        api.getObject("{\"injectedScriptId\":1,\"id\":1}")
-    }
-});
-
-
+})
