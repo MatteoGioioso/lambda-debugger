@@ -3,7 +3,9 @@ class DebuggerAPI {
         CONTINUE: 0,
         ENABLE: 1,
         SET_BREAK_POINT: 2,
-        GET_SCRIPT_CODE: 3
+        GET_SCRIPT_CODE: 3,
+        GET_OBJECT: 4,
+        STEP_OVER: 5
     }
 
     constructor({url}) {
@@ -21,6 +23,12 @@ class DebuggerAPI {
               resolve()
           })
       })
+    }
+
+    _createPayload({method, id, params}){
+        return JSON.stringify({
+            method, id, params
+        })
     }
 
     _attachTemporaryResponseEvent(conditionCallback){
@@ -46,7 +54,7 @@ class DebuggerAPI {
         return this._ws
     }
 
-    continue(){
+    waitForDebugger(){
         this._ws.send(JSON.stringify({
             method: 'Runtime.runIfWaitingForDebugger',
             id: this.messagesCode.CONTINUE
@@ -94,14 +102,69 @@ class DebuggerAPI {
             params: {
                 objectId: id
             },
-            id: 48
+            id: this.messagesCode.GET_OBJECT
         }))
+        return this._attachTemporaryResponseEvent((data) => {
+            return data.id === this.messagesCode.GET_OBJECT
+        })
     }
 
     getSourceCodeId(data){
         if (data.method === 'Debugger.scriptParsed' && data.params.url.includes('test.js')){
             return data.params.scriptId
         }
+    }
+
+    stepOver(){
+        this._ws.send(this._createPayload({
+            id: this.messagesCode.STEP_OVER,
+            method: 'Debugger.stepOver'
+        }))
+
+        return this._attachTemporaryResponseEvent(data => {
+            return data.method === 'Debugger.paused'
+        })
+    }
+
+    _getLineId(callFrame){
+        return callFrame.location.lineNumber
+    }
+
+    async getMetaFromStep(continueForDebugger){
+        let meta = {};
+        let pausedExecutionMeta;
+        if (continueForDebugger){
+            pausedExecutionMeta = await this.waitForDebugger();
+        } else {
+            pausedExecutionMeta = await this.stepOver()
+        }
+
+        for await (const callFrame of pausedExecutionMeta.params.callFrames) {
+            if (callFrame.url && callFrame.url.includes('test.js')) {
+                // console.log(JSON.stringify(callFrame, null, 2))
+                if (callFrame.scopeChain){
+                    meta[this._getLineId(callFrame)] = {
+                        variables: []
+                    }
+                    const objectIds = callFrame.scopeChain.map(sc => sc.object.objectId)
+                    for await (const objectId of objectIds) {
+                        const object = await this.getObject(objectId)
+                        for await (const obj of object.result.result) {
+                            if (obj && obj.value){
+                                if (['firstNumber', 'secondNumber', 'addResult', 'add', 'anotherVariable'].includes(obj.name)){
+                                    meta[this._getLineId(callFrame)].variables.push({
+                                        type: obj.value.type,
+                                        value: obj.value.value || obj.value,
+                                        name: obj.name
+                                    })
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return meta
     }
 }
 

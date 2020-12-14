@@ -1,6 +1,7 @@
 const fork = require('child_process').fork
 const path = require('path')
 const inspector = require('inspector')
+const {add} = require("./lib/myFunctions");
 inspector.open(9229, 'localhost', false)
 // Fork the process to start the debugger
 fork(
@@ -16,14 +17,9 @@ fork(
 
 // stop the debugger
 inspector.waitForDebugger()
-
-function add(a, b) {
-    return a + b
-}
+// -- START DEBUGGER -- //
 const firstNumber = 3
 const secondNumber = 6
-
-// -- START DEBUGGER -- //
 const res = add(firstNumber, secondNumber);
 const addResult = res
 console.log(addResult)

@@ -4,27 +4,23 @@ const api = new DebuggerAPI({url: process.env.DEBUGGER_FULL_URL});
 (async function () {
     await api.initClient()
     api.enable()
-    // await api.setBreakpoint(11)
-    // await api.continue()
-    // const sourceCode = await api.getScriptCode()
-    // console.log(sourceCode)
-    // const result = await api.getObject("{\"injectedScriptId\":1,\"id\":1}");
-    // console.log(result)
+    await api.setBreakpoint(20)
+
+    console.log(JSON.stringify((await api.getMetaFromStep(true)), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
+    console.log(JSON.stringify((await api.getMetaFromStep()), null, 2))
 })();
-
-api.client.on('message', async (buffer) => {
-    const data = JSON.parse(buffer)
-
-    const sourceCodeId = api.getSourceCodeId(data);
-
-    if (sourceCodeId) {
-        const res = await api.getScriptCode(sourceCodeId)
-        const lineIndex = res.result.scriptSource
-            .split('\n')
-            .findIndex(line => line.includes('// -- START DEBUGGER -- //'));
-         await api.setBreakpoint(lineIndex+1)
-
-        const codePaused = await api.continue();
-        console.log(codePaused)
-    }
-})
