@@ -5,7 +5,9 @@ class DebuggerAPI {
         SET_BREAK_POINT: 2,
         GET_SCRIPT_CODE: 3,
         GET_OBJECT: 4,
-        STEP_OVER: 5
+        STEP_OVER: 5,
+        STEP_INTO: 6,
+        RESUME: 7
     }
 
     constructor({url}) {
@@ -109,12 +111,6 @@ class DebuggerAPI {
         })
     }
 
-    getSourceCodeId(data){
-        if (data.method === 'Debugger.scriptParsed' && data.params.url.includes('test.js')){
-            return data.params.scriptId
-        }
-    }
-
     stepOver(){
         this._ws.send(this._createPayload({
             id: this.messagesCode.STEP_OVER,
@@ -126,8 +122,36 @@ class DebuggerAPI {
         })
     }
 
+    stepInto(){
+        this._ws.send(this._createPayload({
+            id: this.messagesCode.STEP_INTO,
+            method: 'Debugger.stepInto'
+        }))
+
+        return this._attachTemporaryResponseEvent(data => {
+            return data.method === 'Debugger.paused'
+        })
+    }
+
+
     _getLineId(callFrame){
         return callFrame.location.lineNumber
+    }
+
+    async _getLineScript(callFrame){
+        const script = await this.getScriptCode(callFrame.location.scriptId)
+        const lineNumber = callFrame.location.lineNumber
+        const columnNumber = callFrame.location.columnNumber
+        const scriptSource = script.result.scriptSource
+        const sourceLine = scriptSource.split('\n')[lineNumber];
+        return sourceLine.slice(0, columnNumber)
+    }
+
+    _filterLocalObjectIds(callFrame) {
+        return callFrame
+            .scopeChain
+            .filter(sc => sc.type === 'local')
+            .map(sc => sc.object.objectId)
     }
 
     async getMetaFromStep(continueForDebugger){
@@ -136,28 +160,36 @@ class DebuggerAPI {
         if (continueForDebugger){
             pausedExecutionMeta = await this.waitForDebugger();
         } else {
-            pausedExecutionMeta = await this.stepOver()
+            pausedExecutionMeta = await this.stepInto()
+        }
+
+        meta['__main'] = {
+            // file: process.env.MAIN_FILE
         }
 
         for await (const callFrame of pausedExecutionMeta.params.callFrames) {
-            if (callFrame.url && callFrame.url.includes('test.js')) {
-                // console.log(JSON.stringify(callFrame, null, 2))
+            if (
+                callFrame.url &&
+                callFrame.url.includes(process.env.PROJECT_ROOT)
+            ) {
                 if (callFrame.scopeChain){
-                    meta[this._getLineId(callFrame)] = {
-                        variables: []
+
+                    meta[`Local (${callFrame.url})`] = {
+                        line: {
+                            number: this._getLineId(callFrame),
+                        },
+                        file: callFrame.url,
+                        functions: {}
                     }
-                    const objectIds = callFrame.scopeChain.map(sc => sc.object.objectId)
+                    const objectIds = this._filterLocalObjectIds(callFrame)
+
                     for await (const objectId of objectIds) {
                         const object = await this.getObject(objectId)
                         for await (const obj of object.result.result) {
-                            if (obj && obj.value){
-                                if (['firstNumber', 'secondNumber', 'addResult', 'add', 'anotherVariable'].includes(obj.name)){
-                                    meta[this._getLineId(callFrame)].variables.push({
-                                        type: obj.value.type,
-                                        value: obj.value.value || obj.value,
-                                        name: obj.name
-                                    })
-                                }
+                            if (obj.value.type === 'function'){
+                                meta[`Local (${callFrame.url})`].functions[obj.name] = {}
+                            } else {
+                                meta[`Local (${callFrame.url})`][obj.name] = obj.value.value
                             }
                         }
                     }
@@ -165,6 +197,13 @@ class DebuggerAPI {
             }
         }
         return meta
+    }
+
+    resume(){
+        this._ws.send(this._createPayload({
+            id: this.messagesCode.RESUME,
+            method: 'Debugger.resume'
+        }))
     }
 }
 

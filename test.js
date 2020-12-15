@@ -10,14 +10,13 @@ fork(
     {
         detached: true,
         env: {
-            DEBUGGER_FULL_URL: inspector.url()
+            DEBUGGER_FULL_URL: inspector.url(),
+            PROJECT_ROOT: 'lambda-debugger',
         },
     },
 )
 
-// stop the debugger
 inspector.waitForDebugger()
-// -- START DEBUGGER -- //
 const firstNumber = 3
 const secondNumber = 6
 const res = add(firstNumber, secondNumber);
