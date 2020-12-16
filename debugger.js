@@ -9,8 +9,9 @@ const recordExecution = async () => {
         file.push(stack)
 
         const keys = Object.keys(stack)
-
-        if (stack[keys[keys.length-1]].line.number === 25){
+        const currentLineNumber = stack[keys[1]].line.number
+        console.log(currentLineNumber)
+        if (currentLineNumber === 25){
             break
         }
     }
@@ -18,11 +19,16 @@ const recordExecution = async () => {
 
 (async function () {
     await api.initClient()
-    api.enable()
+    const scriptInfo = await api.enable();
+    // const breakpoints = await api.getPossibleBreakpoints(
+    //     scriptInfo.params.scriptId,
+    //     scriptInfo.params.startLine,
+    //     scriptInfo.params.endLine
+    // );
+
     await api.setBreakpoint(20)
-    const stack = await api.getMetaFromStep(true)
-    file.push(stack)
-    await recordExecution()
-    api.resume()
-    console.log(JSON.stringify(file, null, 2))
+    console.log((await api.getMetaFromStep(true)))
+    console.log((await api.getMetaFromStep()))
+    console.log((await api.getMetaFromStep()))
+    console.log((await api.getMetaFromStep()))
 })();

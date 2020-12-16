@@ -7,7 +7,9 @@ class DebuggerAPI {
         GET_OBJECT: 4,
         STEP_OVER: 5,
         STEP_INTO: 6,
-        RESUME: 7
+        RESUME: 7,
+        GET_POSSIBLE_BREAKPOINTS: 8,
+        STEP_OUT: 9
     }
 
     constructor({url}) {
@@ -39,12 +41,13 @@ class DebuggerAPI {
                 const data = JSON.parse(buffer)
                 if (conditionCallback(data)){
                     this._ws.removeEventListener('message', eventListener)
-                    resolve(data)
+                    return resolve(data)
                 }
 
-                if (data.error){
+                if (conditionCallback(data) && data.error){
                     this._ws.removeEventListener('message', eventListener)
-                    reject(data.error)
+                    console.error(data.error)
+                    return reject(data.error)
                 }
             }
 
@@ -66,8 +69,11 @@ class DebuggerAPI {
         })
     }
 
-    enable(){
+    async enable(){
         this._ws.send(JSON.stringify({method: 'Debugger.enable', id: this.messagesCode.ENABLE}))
+        return this._attachTemporaryResponseEvent(data => {
+            return data.method === 'Debugger.scriptParsed' && data.params.url.includes(process.env.PROJECT_ROOT)
+        })
     }
 
     async setBreakpoint(lineNumber){
@@ -133,6 +139,35 @@ class DebuggerAPI {
         })
     }
 
+    getPossibleBreakpoints(scriptId, startLine, endLine){
+        this._ws.send(this._createPayload({
+            id: this.messagesCode.GET_POSSIBLE_BREAKPOINTS,
+            method: 'Debugger.getPossibleBreakpoints',
+            params: {
+                start: {
+                    scriptId, lineNumber: startLine
+                },
+                end: {
+                    scriptId, lineNumber: endLine
+                }
+            }
+        }))
+
+        return this._attachTemporaryResponseEvent(data => {
+            return data.id === this.messagesCode.GET_POSSIBLE_BREAKPOINTS
+        })
+    }
+
+    stepOut(){
+        this._ws.send(this._createPayload({
+            id: this.messagesCode.STEP_OUT,
+            method: 'Debugger.stepOut'
+        }))
+        return this._attachTemporaryResponseEvent(data => {
+            return data.id === this.messagesCode.STEP_OUT
+        })
+    }
+
 
     _getLineId(callFrame){
         return callFrame.location.lineNumber
@@ -147,24 +182,33 @@ class DebuggerAPI {
         return sourceLine.slice(0, columnNumber)
     }
 
-    _filterLocalObjectIds(callFrame) {
+    _filterLocalScopeChain(callFrame) {
         return callFrame
             .scopeChain
             .filter(sc => sc.type === 'local')
-            .map(sc => sc.object.objectId)
     }
 
-    async getMetaFromStep(continueForDebugger){
-        let meta = {};
+    _getFileNameFromPath(callFrame){
+        const split = callFrame.url.split('/');
+        return split.slice(-1)[0]
+    }
+
+    _getStackKey(callFrame){
+        const currentLineNumber = this._getLineId(callFrame)
+        const functionName = callFrame.functionName
+        const fileName = this._getFileNameFromPath(callFrame)
+        return `${functionName || 'anonymous'}(), ${fileName}:${currentLineNumber}`
+    }
+
+    async getMetaFromStep(continueForDebugger, line){
+        let stack = {};
         let pausedExecutionMeta;
         if (continueForDebugger){
             pausedExecutionMeta = await this.waitForDebugger();
+        } else if (line === 3) {
+            pausedExecutionMeta = await this.stepOver()
         } else {
             pausedExecutionMeta = await this.stepInto()
-        }
-
-        meta['__main'] = {
-            // file: process.env.MAIN_FILE
         }
 
         for await (const callFrame of pausedExecutionMeta.params.callFrames) {
@@ -173,30 +217,35 @@ class DebuggerAPI {
                 callFrame.url.includes(process.env.PROJECT_ROOT)
             ) {
                 if (callFrame.scopeChain){
-
-                    meta[`Local (${callFrame.url})`] = {
-                        line: {
-                            number: this._getLineId(callFrame),
+                    stack[this._getStackKey(callFrame)] = {
+                        meta: {
+                            current: this._getLineId(callFrame),
                         },
                         file: callFrame.url,
-                        functions: {}
+                        local: {
+                            functions: {},
+                        }
                     }
-                    const objectIds = this._filterLocalObjectIds(callFrame)
+                    const localScopeChain = this._filterLocalScopeChain(callFrame)
 
-                    for await (const objectId of objectIds) {
+                    for await (const scope of localScopeChain) {
+                        stack[this._getStackKey(callFrame)].meta.start = scope.startLocation.lineNumber
+                        stack[this._getStackKey(callFrame)].meta.end = scope.endLocation.lineNumber
+                        stack[this._getStackKey(callFrame)].meta.scriptId = scope.startLocation.scriptId
+                        const objectId = scope.object.objectId
                         const object = await this.getObject(objectId)
-                        for await (const obj of object.result.result) {
+                        for (const obj of object.result.result) {
                             if (obj.value.type === 'function'){
-                                meta[`Local (${callFrame.url})`].functions[obj.name] = {}
+                                stack[this._getStackKey(callFrame)].local.functions[obj.name] = {}
                             } else {
-                                meta[`Local (${callFrame.url})`][obj.name] = obj.value.value
+                                stack[this._getStackKey(callFrame)].local[obj.name] = obj.value.value
                             }
                         }
                     }
                 }
             }
         }
-        return meta
+        return stack
     }
 
     resume(){
