@@ -195,15 +195,25 @@ class DebuggerAPI {
         return `${functionName || 'anonymous'}(), ${fileName}:${currentLineNumber}`
     }
 
-    async getMetaFromStep(){
+    async getMetaFromStep(stepOver){
         let stack = {};
-        let pausedExecutionMeta = await this.stepInto()
+        let pausedExecutionMeta;
+        if (stepOver) {
+            pausedExecutionMeta = await this.stepOver()
+        } else {
+            pausedExecutionMeta = await this.stepInto()
+        }
 
         for await (const callFrame of pausedExecutionMeta.params.callFrames) {
+            const callFrameId = JSON.parse(callFrame.callFrameId)
             if (
-                callFrame.url &&
-                callFrame.url.includes(process.env.PROJECT_ROOT)
-            ) {
+                callFrameId.ordinal === 0 &&
+                !callFrame.url.includes(process.env.PROJECT_ROOT)
+            ){
+                return this.getMetaFromStep(true)
+            }
+
+            if (callFrame.url) {
                 if (callFrame.scopeChain){
                     stack[this._getStackKey(callFrame)] = {
                         meta: {
@@ -233,7 +243,7 @@ class DebuggerAPI {
                 }
             }
         }
-        console.log(stack)
+
         return stack
     }
 
