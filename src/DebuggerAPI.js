@@ -55,10 +55,6 @@ class DebuggerAPI {
         })
     }
 
-    get client() {
-        return this._ws
-    }
-
     waitForDebugger(){
         this._ws.send(JSON.stringify({
             method: 'Runtime.runIfWaitingForDebugger',
@@ -76,13 +72,13 @@ class DebuggerAPI {
         })
     }
 
-    async setBreakpoint(lineNumber){
+    async setBreakpoint(lineNumber, scriptId){
         this._ws.send(JSON.stringify({
             method: 'Debugger.setBreakpoint',
             id: this.messagesCode.SET_BREAK_POINT,
             params: {
                 location: {
-                    scriptId: '69',
+                    scriptId,
                     lineNumber
                 }
             }
@@ -104,7 +100,7 @@ class DebuggerAPI {
         })
     }
 
-    getObject(id){
+    _getScopeChainObjects(id){
         this._ws.send(JSON.stringify({
             method: 'Runtime.getProperties',
             params: {
@@ -139,6 +135,16 @@ class DebuggerAPI {
         })
     }
 
+    stepOut(){
+        this._ws.send(this._createPayload({
+            id: this.messagesCode.STEP_OUT,
+            method: 'Debugger.stepOut'
+        }))
+        return this._attachTemporaryResponseEvent(data => {
+            return data.id === this.messagesCode.STEP_OUT
+        })
+    }
+
     getPossibleBreakpoints(scriptId, startLine, endLine){
         this._ws.send(this._createPayload({
             id: this.messagesCode.GET_POSSIBLE_BREAKPOINTS,
@@ -157,17 +163,6 @@ class DebuggerAPI {
             return data.id === this.messagesCode.GET_POSSIBLE_BREAKPOINTS
         })
     }
-
-    stepOut(){
-        this._ws.send(this._createPayload({
-            id: this.messagesCode.STEP_OUT,
-            method: 'Debugger.stepOut'
-        }))
-        return this._attachTemporaryResponseEvent(data => {
-            return data.id === this.messagesCode.STEP_OUT
-        })
-    }
-
 
     _getLineId(callFrame){
         return callFrame.location.lineNumber
@@ -200,16 +195,9 @@ class DebuggerAPI {
         return `${functionName || 'anonymous'}(), ${fileName}:${currentLineNumber}`
     }
 
-    async getMetaFromStep(continueForDebugger, line){
+    async getMetaFromStep(){
         let stack = {};
-        let pausedExecutionMeta;
-        if (continueForDebugger){
-            pausedExecutionMeta = await this.waitForDebugger();
-        } else if (line === 3) {
-            pausedExecutionMeta = await this.stepOver()
-        } else {
-            pausedExecutionMeta = await this.stepInto()
-        }
+        let pausedExecutionMeta = await this.stepInto()
 
         for await (const callFrame of pausedExecutionMeta.params.callFrames) {
             if (
@@ -233,7 +221,7 @@ class DebuggerAPI {
                         stack[this._getStackKey(callFrame)].meta.end = scope.endLocation.lineNumber
                         stack[this._getStackKey(callFrame)].meta.scriptId = scope.startLocation.scriptId
                         const objectId = scope.object.objectId
-                        const object = await this.getObject(objectId)
+                        const object = await this._getScopeChainObjects(objectId)
                         for (const obj of object.result.result) {
                             if (obj.value.type === 'function'){
                                 stack[this._getStackKey(callFrame)].local.functions[obj.name] = {}
@@ -245,6 +233,7 @@ class DebuggerAPI {
                 }
             }
         }
+        console.log(stack)
         return stack
     }
 

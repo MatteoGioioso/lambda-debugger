@@ -4,7 +4,7 @@ const inspector = require('inspector')
 const {add, multiply} = require("./lib/myFunctions");
 inspector.open(9229, 'localhost', false)
 // Fork the process to start the debugger
-fork(
+const debuggerProxy = fork(
     path.join(__dirname, 'debugger.js'),
     [],
     {
@@ -16,11 +16,25 @@ fork(
     },
 )
 
-inspector.waitForDebugger()
-const firstNumber = 3
-const secondNumber = 6
-const addition = add(firstNumber, secondNumber);
-console.log(addition)
-const multiplication = multiply(addition, 5)
-console.log(multiplication)
-inspector.close()
+function waitForDebuggerConnection(){
+    return new Promise((resolve, reject) => {
+        debuggerProxy.once('message', (mes) => {
+            if (mes === 'brokerConnect') {
+                return resolve('connected');
+            }
+
+            return reject('failed to connect');
+        });
+    })
+}
+
+waitForDebuggerConnection().then((res) => {
+    console.log(res)
+    const firstNumber = 3
+    const secondNumber = 6
+    const addition = add(firstNumber, secondNumber);
+    console.log(addition)
+    const multiplication = multiply(addition, 5)
+    console.log(multiplication)
+    inspector.close()
+})

@@ -1,19 +1,13 @@
-const {DebuggerAPI} = require("./src/DebuggerAPI");
+const { DebuggerAPI } = require("./src/DebuggerAPI");
 const api = new DebuggerAPI({url: process.env.DEBUGGER_FULL_URL});
-
 const file = [];
 
 const recordExecution = async () => {
     while (true) {
-        const stack = await api.getMetaFromStep()
+        const stack = await api.getMetaFromStep(false)
+        await require('util').promisify(setTimeout)(500)
+        console.log('=============================\n\n')
         file.push(stack)
-
-        const keys = Object.keys(stack)
-        const currentLineNumber = stack[keys[1]].line.number
-        console.log(currentLineNumber)
-        if (currentLineNumber === 25){
-            break
-        }
     }
 }
 
@@ -25,10 +19,9 @@ const recordExecution = async () => {
     //     scriptInfo.params.startLine,
     //     scriptInfo.params.endLine
     // );
-
-    await api.setBreakpoint(20)
-    console.log((await api.getMetaFromStep(true)))
-    console.log((await api.getMetaFromStep()))
-    console.log((await api.getMetaFromStep()))
-    console.log((await api.getMetaFromStep()))
+    // console.log(breakpoints.result.locations)
+    await api.setBreakpoint(34, scriptInfo.params.scriptId)
+    process.send('brokerConnect');
+    await recordExecution()
+    console.log(file)
 })();
