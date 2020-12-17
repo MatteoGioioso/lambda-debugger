@@ -12,7 +12,8 @@ const debuggerProxy = fork(
         env: {
             DEBUGGER_FULL_URL: inspector.url(),
             PROJECT_ROOT: 'lambda-debugger',
-            ARTIFACT_FOLDER: 'tmp/'
+            ARTIFACT_FOLDER: 'tmp/',
+            START_LINE: 33
         },
     },
 )
@@ -29,8 +30,8 @@ function waitForDebuggerConnection(){
     })
 }
 
-waitForDebuggerConnection().then((res) => {
+waitForDebuggerConnection().then(async () => {
     const {handler} = require('./handler')
-    handler()
+    await handler()
     inspector.close()
 })

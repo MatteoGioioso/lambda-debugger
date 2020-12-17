@@ -1,7 +1,8 @@
-const { DebuggerAPI } = require("./src/DebuggerAPI");
+const { DebuggerAPI } = require("./src/nodejs/DebuggerAPI");
 const {
     DEBUGGER_FULL_URL,
-    ARTIFACT_FOLDER
+    ARTIFACT_FOLDER,
+    START_LINE
 } = process.env
 const api = new DebuggerAPI({url: DEBUGGER_FULL_URL});
 const path = require('path')
@@ -45,7 +46,7 @@ process.on('beforeExit', () => {
     api.collectSourceCode()
     const scriptInfo = await api.enable();
     await api.setBreakpoint(
-        32, // this could be arbitrarily set depending on the final code
+        Number(START_LINE), // this could be arbitrarily set depending on the final code
         scriptInfo.params.scriptId
     )
     process.send('brokerConnect');
