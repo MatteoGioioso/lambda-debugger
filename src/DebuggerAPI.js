@@ -1,38 +1,93 @@
+const WebSocket = require('ws');
+
 class DebuggerAPI {
-    messagesCode = {
-        CONTINUE: 0,
-        ENABLE: 1,
-        SET_BREAK_POINT: 2,
-        GET_SCRIPT_CODE: 3,
-        GET_OBJECT: 4,
-        STEP_OVER: 5,
-        STEP_INTO: 6,
-        RESUME: 7,
-        GET_POSSIBLE_BREAKPOINTS: 8,
-        STEP_OUT: 9
+    get files() {
+        return this._files;
+    }
+
+    messagesCodeNameSpace = {
+        CONTINUE: 10,
+        ENABLE: 11,
+        SET_BREAK_POINT: 12,
+        GET_SCRIPT_CODE: 13,
+        GET_OBJECT: 14,
+        STEP_OVER: 15,
+        STEP_INTO: 16,
+        RESUME: 17,
+        GET_POSSIBLE_BREAKPOINTS: 18,
+        STEP_OUT: 19
     }
 
     constructor({url}) {
         this._url = url
+        this._PROJECT_ROOT = process.env.PROJECT_ROOT
+        this._files = {};
+        this._eventListeners = {};
     }
 
     initClient(){
-        const WebSocket = require('ws');
         this._ws = new WebSocket(this._url, {
             perMessageDeflate: false
         })
 
-      return new Promise(resolve => {
+      return new Promise((resolve, reject) => {
           this._ws.once('open', () => {
               resolve()
           })
+
+          this._ws.on('error', (err) => {
+              reject(err)
+          })
       })
+    }
+
+    terminateClient(){
+        // Clean up all the event listeners
+        Object.keys(this._eventListeners).forEach(key => {
+            this._ws.removeEventListener('message', this._eventListeners[key])
+        })
+        this._ws.close()
+        this._files = {}
+        this._eventListeners = {}
+    }
+
+    _generateBigIntId(codeNamespace){
+        const bigInt = Math.floor(Math.random() * 10000000);
+        return parseInt(`${codeNamespace}${bigInt}`)
     }
 
     _createPayload({method, id, params}){
         return JSON.stringify({
             method, id, params
         })
+    }
+
+    // This is an event listener
+    collectSourceCode(){
+        const eventListener = async (buffer) => {
+            const data = JSON.parse(buffer)
+            if (data.method === 'Debugger.scriptParsed' && data.params.url.includes(this._PROJECT_ROOT)){
+                const currentFileKey = data.params.url
+
+                if (!this._files[currentFileKey]) {
+                    const source = await this.getScriptCode(data.params.scriptId)
+                    this._files[currentFileKey] = {}
+                    this._files[currentFileKey].code = source.result.scriptSource
+                    this._files[currentFileKey].scriptId = data.params.scriptId
+                    this._files[currentFileKey].sourceMapURL = data.params.sourceMapURL
+                    this._files[currentFileKey].hasSourceURL = data.params.hasSourceURL
+                    this._files[currentFileKey].hasCode = true
+                }
+            }
+
+            if (data.error){
+                console.error(data.error)
+            }
+        }
+        this._eventListeners = {
+            collectSourceCodeEL: eventListener
+        }
+        this._ws.on('message', eventListener)
     }
 
     _attachTemporaryResponseEvent(conditionCallback){
@@ -56,9 +111,10 @@ class DebuggerAPI {
     }
 
     waitForDebugger(){
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.CONTINUE)
         this._ws.send(JSON.stringify({
             method: 'Runtime.runIfWaitingForDebugger',
-            id: this.messagesCode.CONTINUE
+            id
         }))
         return this._attachTemporaryResponseEvent((data) => {
             return data.method === 'Debugger.paused'
@@ -66,16 +122,21 @@ class DebuggerAPI {
     }
 
     async enable(){
-        this._ws.send(JSON.stringify({method: 'Debugger.enable', id: this.messagesCode.ENABLE}))
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.ENABLE)
+        this._ws.send(this._createPayload({
+            method: 'Debugger.enable',
+            id
+        }))
         return this._attachTemporaryResponseEvent(data => {
             return data.method === 'Debugger.scriptParsed' && data.params.url.includes(process.env.PROJECT_ROOT)
         })
     }
 
     async setBreakpoint(lineNumber, scriptId){
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.SET_BREAK_POINT)
         this._ws.send(JSON.stringify({
             method: 'Debugger.setBreakpoint',
-            id: this.messagesCode.SET_BREAK_POINT,
+            id,
             params: {
                 location: {
                     scriptId,
@@ -84,40 +145,37 @@ class DebuggerAPI {
             }
         }))
         return this._attachTemporaryResponseEvent((data) => {
-            return data.id === this.messagesCode.SET_BREAK_POINT
+            return data.id === id
         })
     }
 
     getScriptCode(scriptId){
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.GET_SCRIPT_CODE)
         this._ws.send(JSON.stringify({
             method: 'Debugger.getScriptSource',
             params: {scriptId},
-            id: this.messagesCode.GET_SCRIPT_CODE
+            id
         }))
-
         return this._attachTemporaryResponseEvent((data) => {
-            return data.id === this.messagesCode.GET_SCRIPT_CODE
+            return data.id === id
         })
     }
 
-    _getScopeChainObjects(id){
+    _getScopeChainObjects(objectId){
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.GET_OBJECT)
         this._ws.send(JSON.stringify({
             method: 'Runtime.getProperties',
-            params: {
-                objectId: id
-            },
-            id: this.messagesCode.GET_OBJECT
+            params: { objectId },
+            id
         }))
         return this._attachTemporaryResponseEvent((data) => {
-            return data.id === this.messagesCode.GET_OBJECT
+            return data.id === id
         })
     }
 
     stepOver(){
-        this._ws.send(this._createPayload({
-            id: this.messagesCode.STEP_OVER,
-            method: 'Debugger.stepOver'
-        }))
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.STEP_OVER)
+        this._ws.send(this._createPayload({ id, method: 'Debugger.stepOver' }))
 
         return this._attachTemporaryResponseEvent(data => {
             return data.method === 'Debugger.paused'
@@ -125,29 +183,17 @@ class DebuggerAPI {
     }
 
     stepInto(){
-        this._ws.send(this._createPayload({
-            id: this.messagesCode.STEP_INTO,
-            method: 'Debugger.stepInto'
-        }))
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.STEP_INTO)
+        this._ws.send(this._createPayload({ id, method: 'Debugger.stepInto' }))
 
         return this._attachTemporaryResponseEvent(data => {
             return data.method === 'Debugger.paused'
         })
     }
 
-    stepOut(){
-        this._ws.send(this._createPayload({
-            id: this.messagesCode.STEP_OUT,
-            method: 'Debugger.stepOut'
-        }))
-        return this._attachTemporaryResponseEvent(data => {
-            return data.id === this.messagesCode.STEP_OUT
-        })
-    }
-
     getPossibleBreakpoints(scriptId, startLine, endLine){
         this._ws.send(this._createPayload({
-            id: this.messagesCode.GET_POSSIBLE_BREAKPOINTS,
+            id: this.messagesCodeNameSpace.GET_POSSIBLE_BREAKPOINTS,
             method: 'Debugger.getPossibleBreakpoints',
             params: {
                 start: {
@@ -160,21 +206,12 @@ class DebuggerAPI {
         }))
 
         return this._attachTemporaryResponseEvent(data => {
-            return data.id === this.messagesCode.GET_POSSIBLE_BREAKPOINTS
+            return data.id === this.messagesCodeNameSpace.GET_POSSIBLE_BREAKPOINTS
         })
     }
 
-    _getLineId(callFrame){
+    _getLineNumber(callFrame){
         return callFrame.location.lineNumber
-    }
-
-    async _getLineScript(callFrame){
-        const script = await this.getScriptCode(callFrame.location.scriptId)
-        const lineNumber = callFrame.location.lineNumber
-        const columnNumber = callFrame.location.columnNumber
-        const scriptSource = script.result.scriptSource
-        const sourceLine = scriptSource.split('\n')[lineNumber];
-        return sourceLine.slice(0, columnNumber)
     }
 
     _filterLocalScopeChain(callFrame) {
@@ -189,13 +226,30 @@ class DebuggerAPI {
     }
 
     _getStackKey(callFrame){
-        const currentLineNumber = this._getLineId(callFrame)
+        const currentLineNumber = this._getLineNumber(callFrame)
         const functionName = callFrame.functionName
         const fileName = this._getFileNameFromPath(callFrame)
         return `${functionName || 'anonymous'}(), ${fileName}:${currentLineNumber}`
     }
 
-    async getMetaFromStep(stepOver){
+    _isTopOfTheStackInternal(callFrame){
+        const callFrameId = JSON.parse(callFrame.callFrameId)
+        return callFrameId.ordinal === 0 && !callFrame.url.includes(process.env.PROJECT_ROOT)
+    }
+
+    _initStackFrame(stack, callFrame){
+        stack[this._getStackKey(callFrame)] = {
+            meta: {
+                current: this._getLineNumber(callFrame),
+            },
+            file: callFrame.url,
+            local: {
+                functions: {},
+            }
+        }
+    }
+
+    async getStackForCurrentStep(stepOver){
         let stack = {};
         let pausedExecutionMeta;
         if (stepOver) {
@@ -205,40 +259,26 @@ class DebuggerAPI {
         }
 
         for await (const callFrame of pausedExecutionMeta.params.callFrames) {
-            const callFrameId = JSON.parse(callFrame.callFrameId)
-            if (
-                callFrameId.ordinal === 0 &&
-                !callFrame.url.includes(process.env.PROJECT_ROOT)
-            ){
-                return this.getMetaFromStep(true)
+            // If the top of the stack is on an internal nodejs function
+            // we will automatically step over the function call
+            if (this._isTopOfTheStackInternal(callFrame)){
+                return this.getStackForCurrentStep(true)
             }
 
-            if (callFrame.url) {
-                if (callFrame.scopeChain){
-                    stack[this._getStackKey(callFrame)] = {
-                        meta: {
-                            current: this._getLineId(callFrame),
-                        },
-                        file: callFrame.url,
-                        local: {
-                            functions: {},
-                        }
-                    }
-                    const localScopeChain = this._filterLocalScopeChain(callFrame)
+            this._initStackFrame(stack, callFrame)
+            const localScopeChain = this._filterLocalScopeChain(callFrame)
 
-                    for await (const scope of localScopeChain) {
-                        stack[this._getStackKey(callFrame)].meta.start = scope.startLocation.lineNumber
-                        stack[this._getStackKey(callFrame)].meta.end = scope.endLocation.lineNumber
-                        stack[this._getStackKey(callFrame)].meta.scriptId = scope.startLocation.scriptId
-                        const objectId = scope.object.objectId
-                        const object = await this._getScopeChainObjects(objectId)
-                        for (const obj of object.result.result) {
-                            if (obj.value.type === 'function'){
-                                stack[this._getStackKey(callFrame)].local.functions[obj.name] = {}
-                            } else {
-                                stack[this._getStackKey(callFrame)].local[obj.name] = obj.value.value
-                            }
-                        }
+            for await (const scope of localScopeChain) {
+                stack[this._getStackKey(callFrame)].meta.start = scope.startLocation.lineNumber
+                stack[this._getStackKey(callFrame)].meta.end = scope.endLocation.lineNumber
+                stack[this._getStackKey(callFrame)].meta.scriptId = scope.startLocation.scriptId
+                const objectId = scope.object.objectId
+                const object = await this._getScopeChainObjects(objectId)
+                for (const obj of object.result.result) {
+                    if (obj.value.type === 'function'){
+                        stack[this._getStackKey(callFrame)].local.functions[obj.name] = {}
+                    } else {
+                        stack[this._getStackKey(callFrame)].local[obj.name] = obj.value.value
                     }
                 }
             }
@@ -249,7 +289,7 @@ class DebuggerAPI {
 
     resume(){
         this._ws.send(this._createPayload({
-            id: this.messagesCode.RESUME,
+            id: this.messagesCodeNameSpace.RESUME,
             method: 'Debugger.resume'
         }))
     }
