@@ -18,7 +18,7 @@ const recordExecution = async () => {
 process.on('beforeExit', () => {
     try {
         fs.writeFileSync(
-            path.join(ARTIFACT_FOLDER, 'debug.jsom'),
+            path.join(ARTIFACT_FOLDER, 'debug.json'),
             JSON.stringify(executions, null, 2),
             'utf-8'
         )

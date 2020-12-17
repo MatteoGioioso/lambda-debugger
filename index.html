@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Debugger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/solarized-dark.min.css">
+
+    <style>
+        html {
+            background: darkgrey;
+        }
+        pre {
+            padding: 0;
+            background: white;
+        }
+
+        .code-window {
+            max-height: 600px;
+            overflow: scroll;
+        }
+
+        .variables-window {
+            max-height: 600px;
+            overflow: scroll;
+        }
+
+        .arrow-forward {
+            cursor: pointer;
+        }
+
+        /* for block of numbers */
+        .hljs-ln-numbers {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            text-align: center;
+            color: #ccc;
+            border-right: 1px solid #CCC;
+            vertical-align: top;
+            padding-right: 5px;
+
+            /* your custom style here */
+        }
+
+        /* for block of code */
+        .hljs-ln-code {
+            padding-left: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<section class="section">
+    <div class="tile is-ancestor">
+        <div class="tile is-vertical is-12">
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <div class="arrow-forward">
+                        >
+                    </div>
+                </article>
+            </div>
+            <div class="tile">
+                <div class="tile is-parent is-vertical">
+                    <article class="tile is-child box">
+                        <pre class="code-window">
+                            <code data-code="code-window" class="javascript"></code>
+                        </pre>
+                    </article>
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        <pre class="variables-window">
+                            <code data-code="variables-window" class="javascript"></code>
+                        </pre>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+</body>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+<script>
+    let executionCounter = 0;
+
+    function findCurrentExecution(wholeStack){
+        const stack = wholeStack[executionCounter]
+        for (const stackKey in stack) {
+            const execution = stack[stackKey]
+            if (execution.meta.ordinal === 0){
+                return execution
+            }
+        }
+    }
+
+    function setCode(code){
+        document.querySelector('[data-code="code-window"]').innerHTML = code.code
+    }
+
+    function setVariables(currentExecution) {
+        const variables = JSON.stringify(currentExecution.local, null, 2)
+        document.querySelector('[data-code="variables-window"]').innerHTML = variables
+    }
+
+    function refreshHighlight(){
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
+        document.querySelectorAll('code.hljs').forEach((block) => {
+            hljs.lineNumbersBlock(block);
+        });
+    }
+
+    function highlightCurrentLine(currentExecution) {
+        // line count starts at 0
+        const currentLine = currentExecution.meta.current + 1
+        const element = document.querySelector(`[data-line-number="${currentLine}"]`);
+        if (!element){
+            return;
+        }
+
+        element.scrollIntoView();
+        element.style.backgroundColor = 'beige'
+    }
+
+    function renderStep(wholeStack, files){
+        const currentExecution = findCurrentExecution(wholeStack)
+        const code = files[currentExecution.file]
+        setCode(code)
+        setVariables(currentExecution)
+        refreshHighlight()
+        // There is an async process with hljs line numbers, so we need to
+        // execute this later
+        setTimeout(() => highlightCurrentLine(currentExecution), 0)
+    }
+
+    fetch('tmp/files.json')
+        .then(data => data.json())
+        .then(files => {
+            fetch('tmp/debug.json')
+                .then(data => data.json())
+                .then(wholeStack => {
+                    const arrowForward = document.querySelector('.arrow-forward');
+                    arrowForward.addEventListener('click', (e) => {
+                        executionCounter++
+                        renderStep(wholeStack, files)
+                    })
+
+                    renderStep(wholeStack, files)
+                })
+        })
+
+</script>
+</html>

@@ -232,8 +232,11 @@ class DebuggerAPI {
         return `${functionName || 'anonymous'}(), ${fileName}:${currentLineNumber}`
     }
 
+    // Check if the current executed call is an internal file.
+    // We do not record these events so we want to skip them
     _isTopOfTheStackInternal(callFrame){
         const callFrameId = JSON.parse(callFrame.callFrameId)
+        // ordinal is the stack order if 0 means that we are at the top
         return callFrameId.ordinal === 0 && !callFrame.url.includes(process.env.PROJECT_ROOT)
     }
 
@@ -265,6 +268,7 @@ class DebuggerAPI {
                 return this.getStackForCurrentStep(true)
             }
 
+            const callFrameId = JSON.parse(callFrame.callFrameId)
             this._initStackFrame(stack, callFrame)
             const localScopeChain = this._filterLocalScopeChain(callFrame)
 
@@ -272,6 +276,7 @@ class DebuggerAPI {
                 stack[this._getStackKey(callFrame)].meta.start = scope.startLocation.lineNumber
                 stack[this._getStackKey(callFrame)].meta.end = scope.endLocation.lineNumber
                 stack[this._getStackKey(callFrame)].meta.scriptId = scope.startLocation.scriptId
+                stack[this._getStackKey(callFrame)].meta.ordinal = callFrameId.ordinal
                 const objectId = scope.object.objectId
                 const object = await this._getScopeChainObjects(objectId)
                 for (const obj of object.result.result) {
