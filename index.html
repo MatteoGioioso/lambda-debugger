@@ -17,8 +17,16 @@
             background: white;
         }
 
+        .tile.is-parent{
+            padding: 1px;
+        }
+
+        .section {
+            padding: 15px;
+        }
+
         .code-window {
-            max-height: 600px;
+            max-height: 700px;
             overflow: scroll;
         }
 
@@ -27,31 +35,14 @@
             overflow: scroll;
         }
 
-        .arrow-forward {
-            cursor: pointer;
-        }
-
-        /* for block of numbers */
-        .hljs-ln-numbers {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-
-            text-align: center;
-            color: #ccc;
-            border-right: 1px solid #CCC;
-            vertical-align: top;
-            padding-right: 5px;
-
-            /* your custom style here */
+        .arrow-forward, .arrow-backward {
+            font-size: 20px;
+            font-weight: bolder;
         }
 
         /* for block of code */
         .hljs-ln-code {
-            padding-left: 10px;
+            padding-left: 10px !important;
         }
 
     </style>
@@ -61,27 +52,51 @@
     <div class="tile is-ancestor">
         <div class="tile is-vertical is-12">
             <div class="tile is-parent">
-                <article class="tile is-child box">
-                    <div class="arrow-forward">
-                        >
-                    </div>
+                <article class="tile is-child">
+                    <nav class="navbar" role="navigation" aria-label="main navigation">
+                        <div class="navbar-brand">
+                            <a class="navbar-item" href="https://bulma.io">
+                                <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+                            </a>
+
+                            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                                <span aria-hidden="true"></span>
+                                <span aria-hidden="true"></span>
+                                <span aria-hidden="true"></span>
+                            </a>
+                        </div>
+
+                        <div id="navbarBasicExample" class="navbar-menu">
+                            <div class="navbar-start">
+                                <a class="navbar-item arrow-backward">
+                                    <-
+                                </a>
+
+                                <a class="navbar-item arrow-forward">
+                                    ->
+                                </a>
+                            </div>
+                        </div>
+
+                    </nav>
                 </article>
             </div>
             <div class="tile">
-                <div class="tile is-parent is-vertical">
-                    <article class="tile is-child box">
+                <div class="tile is-parent is-vertical is-7">
+                    <article class="tile is-child">
                         <pre class="code-window">
                             <code data-code="code-window" class="javascript"></code>
                         </pre>
                     </article>
                 </div>
-                <div class="tile is-parent">
-                    <article class="tile is-child box">
+                <div class="tile is-parent is-vertical is-5">
+                    <article class="tile is-child">
                         <pre class="variables-window">
                             <code data-code="variables-window" class="javascript"></code>
                         </pre>
                     </article>
                 </div>
+
             </div>
         </div>
     </div>
@@ -128,13 +143,13 @@
     function highlightCurrentLine(currentExecution) {
         // line count starts at 0
         const currentLine = currentExecution.meta.current + 1
-        const element = document.querySelector(`[data-line-number="${currentLine}"]`);
+        const element = document.querySelector(`[data-line-number="${currentLine}"]`)
         if (!element){
             return;
         }
 
         element.scrollIntoView();
-        element.style.backgroundColor = 'beige'
+        element.parentNode.style.backgroundColor = 'beige'
     }
 
     function renderStep(wholeStack, files){
@@ -148,18 +163,30 @@
         setTimeout(() => highlightCurrentLine(currentExecution), 0)
     }
 
+    function forwardArrow(wholeStack, files){
+        const arrowForward = document.querySelector('.arrow-forward');
+        arrowForward.addEventListener('click', (e) => {
+            executionCounter++
+            renderStep(wholeStack, files)
+        })
+    }
+
+    function backwardArrow(wholeStack, files){
+        const arrowForward = document.querySelector('.arrow-backward');
+        arrowForward.addEventListener('click', (e) => {
+            executionCounter--
+            renderStep(wholeStack, files)
+        })
+    }
+
     fetch('tmp/files.json')
         .then(data => data.json())
         .then(files => {
             fetch('tmp/debug.json')
                 .then(data => data.json())
                 .then(wholeStack => {
-                    const arrowForward = document.querySelector('.arrow-forward');
-                    arrowForward.addEventListener('click', (e) => {
-                        executionCounter++
-                        renderStep(wholeStack, files)
-                    })
-
+                    forwardArrow(wholeStack, files)
+                    backwardArrow(wholeStack, files)
                     renderStep(wholeStack, files)
                 })
         })

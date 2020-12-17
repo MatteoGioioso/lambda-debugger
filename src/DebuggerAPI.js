@@ -252,6 +252,18 @@ class DebuggerAPI {
         }
     }
 
+    _buildObjectTypes(obj){
+        const finalObject = {}
+        const properties = obj.result.result
+        for (const property of properties) {
+            if (property.isOwn){
+                finalObject[property.name] = property.value.value
+            }
+        }
+
+        return finalObject
+    }
+
     async getStackForCurrentStep(stepOver){
         let stack = {};
         let pausedExecutionMeta;
@@ -268,6 +280,8 @@ class DebuggerAPI {
                 return this.getStackForCurrentStep(true)
             }
 
+            if (!callFrame.url.includes(process.env.PROJECT_ROOT)) continue;
+
             const callFrameId = JSON.parse(callFrame.callFrameId)
             this._initStackFrame(stack, callFrame)
             const localScopeChain = this._filterLocalScopeChain(callFrame)
@@ -277,13 +291,22 @@ class DebuggerAPI {
                 stack[this._getStackKey(callFrame)].meta.end = scope.endLocation.lineNumber
                 stack[this._getStackKey(callFrame)].meta.scriptId = scope.startLocation.scriptId
                 stack[this._getStackKey(callFrame)].meta.ordinal = callFrameId.ordinal
+                
                 const objectId = scope.object.objectId
                 const object = await this._getScopeChainObjects(objectId)
+
                 for (const obj of object.result.result) {
-                    if (obj.value.type === 'function'){
-                        stack[this._getStackKey(callFrame)].local.functions[obj.name] = {}
-                    } else {
-                        stack[this._getStackKey(callFrame)].local[obj.name] = obj.value.value
+                    switch (obj.value.type) {
+                        case 'function':
+                            stack[this._getStackKey(callFrame)].local.functions[obj.name] = {}
+                            break;
+                        case 'object':
+                            const objData = await this._getScopeChainObjects(obj.value.objectId)
+                            const objectType = this._buildObjectTypes(objData);
+                            stack[this._getStackKey(callFrame)].local[obj.name] = objectType
+                            break;
+                        default:
+                            stack[this._getStackKey(callFrame)].local[obj.name] = obj.value.value || 'undefined'
                     }
                 }
             }
