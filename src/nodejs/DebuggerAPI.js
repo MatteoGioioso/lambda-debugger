@@ -334,10 +334,7 @@ class DebuggerAPI {
                 for (const obj of object.result.result) {
                     switch (obj.value.type) {
                         case 'function':
-                            console.log(obj)
                             stack[this._getStackKey(callFrame)].local.functions[obj.name] = {}
-                            const rest = await this._resolveIfPromise(obj, callFrame.returnValue)
-                            console.log(rest)
                             break;
                         case 'object':
                             const objData = await this._getScopeChainObjects(obj.value.objectId)
