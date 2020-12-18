@@ -40,7 +40,6 @@ process.on('beforeExit', async () => {
     await api.initClient()
     api.collectSourceCode()
     const scriptInfo = await api.enable();
-    await api.enableAsyncTracking()
     await api.setBreakpoint(
         Number(START_LINE), // this could be arbitrarily set depending on the final code
         scriptInfo.params.scriptId

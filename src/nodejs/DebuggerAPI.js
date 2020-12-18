@@ -282,23 +282,7 @@ class DebuggerAPI {
             })
         }
     }
-
-    enableAsyncTracking(){
-        const id = this._generateBigIntId(this.messagesCodeNameSpace.ENABLE_ASYNC_TRACKING)
-        this._ws.send(this._createPayload({
-            id,
-            method: 'Debugger.setAsyncCallStackDepth',
-            params: {
-                maxDepth: 50
-            }
-        }))
-
-        return this._attachTemporaryResponseEvent(data => {
-            return data.id === id
-        })
-
-    }
-
+    
     async getStackForCurrentStep(stepOver){
         let stack = {};
         let pausedExecutionMeta;
