@@ -7,8 +7,8 @@ const s3Client = new S3();
 
 class Collector {
     constructor() {
-        this.OUTPUT_PATH = `/tmp/${process.env.LAMBDA_FLAME_OUTPUT}`
-        this.S3_NAME_SPACE = `${process.env.LAMBDA_FLAME_OUTPUT}/${process.env.AWS_LAMBDA_FUNCTION_NAME}`
+        this.OUTPUT_PATH = `/tmp/${process.env.LAMBDA_debugger_OUTPUT}`
+        this.S3_NAME_SPACE = `${process.env.LAMBDA_debugger_OUTPUT}/${process.env.AWS_LAMBDA_FUNCTION_NAME}`
     }
 
     async cleanUpFiles(){
@@ -41,7 +41,7 @@ class Collector {
 
     async uploadToS3(key, data){
         const params = {
-            Bucket: process.env.LAMBDA_FLAME_DEST_BUCKET,
+            Bucket: process.env.LAMBDA_debugger_DEST_BUCKET,
             Key: key,
             Body: data,
         };

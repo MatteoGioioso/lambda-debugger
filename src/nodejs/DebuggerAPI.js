@@ -15,7 +15,9 @@ class DebuggerAPI {
         STEP_INTO: 16,
         RESUME: 17,
         GET_POSSIBLE_BREAKPOINTS: 18,
-        STEP_OUT: 19
+        STEP_OUT: 19,
+        AWAIT_PROMISE: 20,
+        ENABLE_ASYNC_TRACKING: 21
     }
 
     constructor({url}) {
@@ -264,6 +266,39 @@ class DebuggerAPI {
         return finalObject
     }
 
+    async _resolveIfPromise(obj){
+        if (obj.value.className === 'AsyncFunction'){
+            const id = this._generateBigIntId(this.messagesCodeNameSpace.AWAIT_PROMISE)
+            this._ws.send(this._createPayload({
+                method: 'Runtime.awaitPromise',
+                params: {
+                    promiseObjectId: obj.value.objectId
+                },
+                id
+            }))
+
+            return this._attachTemporaryResponseEvent(data => {
+                return data.id === id
+            })
+        }
+    }
+
+    enableAsyncTracking(){
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.ENABLE_ASYNC_TRACKING)
+        this._ws.send(this._createPayload({
+            id,
+            method: 'Debugger.setAsyncCallStackDepth',
+            params: {
+                maxDepth: 50
+            }
+        }))
+
+        return this._attachTemporaryResponseEvent(data => {
+            return data.id === id
+        })
+
+    }
+
     async getStackForCurrentStep(stepOver){
         let stack = {};
         let pausedExecutionMeta;
@@ -276,6 +311,7 @@ class DebuggerAPI {
         for await (const callFrame of pausedExecutionMeta.params.callFrames) {
             // If the top of the stack is on an internal nodejs function
             // we will automatically step over the function call
+            // console.log(callFrame)
             if (this._isTopOfTheStackInternal(callFrame)){
                 return this.getStackForCurrentStep(true)
             }
@@ -298,7 +334,10 @@ class DebuggerAPI {
                 for (const obj of object.result.result) {
                     switch (obj.value.type) {
                         case 'function':
+                            console.log(obj)
                             stack[this._getStackKey(callFrame)].local.functions[obj.name] = {}
+                            const rest = await this._resolveIfPromise(obj, callFrame.returnValue)
+                            console.log(rest)
                             break;
                         case 'object':
                             const objData = await this._getScopeChainObjects(obj.value.objectId)

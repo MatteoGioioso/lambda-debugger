@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/MatteoGioioso/lambda-debugger#readme",
   "dependencies": {
+    "execa": "^5.0.0",
+    "semantic-release": "^17.3.0",
     "ws": "^7.4.1"
   }
 }

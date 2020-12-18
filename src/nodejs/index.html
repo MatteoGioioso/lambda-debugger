@@ -105,6 +105,13 @@
 
 </body>
 
+<script type="application/json" id="debug.json">
+    //---DEBUG.JSON---//
+</script>
+
+<script type="application/json" id="files.json">
+    //---FILES.JSON---//
+</script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
@@ -179,17 +186,11 @@
         })
     }
 
-    fetch('tmp/files.json')
-        .then(data => data.json())
-        .then(files => {
-            fetch('tmp/debug.json')
-                .then(data => data.json())
-                .then(wholeStack => {
-                    forwardArrow(wholeStack, files)
-                    backwardArrow(wholeStack, files)
-                    renderStep(wholeStack, files)
-                })
-        })
+    const debugData = JSON.parse(document.getElementById('debug.json').innerHTML);
+    const filesData = JSON.parse(document.getElementById('files.json').innerHTML);
+    forwardArrow(debugData, filesData)
+    backwardArrow(debugData, filesData)
+    renderStep(debugData, filesData)
 
 </script>
 </html>

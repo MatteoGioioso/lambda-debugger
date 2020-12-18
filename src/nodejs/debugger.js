@@ -1,7 +1,8 @@
 const { DebuggerAPI } = require("./DebuggerAPI");
 const {
     DEBUGGER_FULL_URL,
-    ARTIFACT_FOLDER
+    ARTIFACT_FOLDER,
+    START_LINE
 } = process.env
 const api = new DebuggerAPI({url: DEBUGGER_FULL_URL});
 const path = require('path')
@@ -15,21 +16,16 @@ const recordExecution = async () => {
     }
 }
 
-process.on('beforeExit', () => {
+process.on('beforeExit', async () => {
     try {
-        fs.writeFileSync(
-            path.join(ARTIFACT_FOLDER, 'debug.json'),
-            JSON.stringify(executions, null, 2),
-            'utf-8'
-        )
+        const html = await fs.promises.readFile(path.join(__dirname, 'index.html'), 'utf8');
+        const debugData = JSON.stringify(executions, null, 2)
+        const filesData = JSON.stringify(api.files, null, 2)
+        const newHtml = html
+            .replace('//---DEBUG.JSON---//', debugData)
+            .replace('//---FILES.JSON---//', filesData)
 
-        const files = api.files
-
-        fs.writeFileSync(
-            path.join(ARTIFACT_FOLDER, 'files.json'),
-            JSON.stringify(files, null, 2),
-            'utf-8'
-        )
+        await fs.promises.writeFile(path.join(__dirname, '../../tmp/index.html'), newHtml)
 
         api.terminateClient()
 
@@ -44,8 +40,9 @@ process.on('beforeExit', () => {
     await api.initClient()
     api.collectSourceCode()
     const scriptInfo = await api.enable();
+    await api.enableAsyncTracking()
     await api.setBreakpoint(
-        32, // this could be arbitrarily set depending on the final code
+        Number(START_LINE), // this could be arbitrarily set depending on the final code
         scriptInfo.params.scriptId
     )
     process.send('brokerConnect');

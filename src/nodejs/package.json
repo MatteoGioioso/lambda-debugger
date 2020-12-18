@@ -1,5 +1,5 @@
 {
-  "name": "lambda-flame",
+  "name": "lambda-debugger",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,16 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MatteoGioioso/lambda-flame.git"
+    "url": "git+https://github.com/MatteoGioioso/lambda-debugger.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MatteoGioioso/lambda-flame/issues"
+    "url": "https://github.com/MatteoGioioso/lambda-debugger/issues"
   },
-  "homepage": "https://github.com/MatteoGioioso/lambda-flame#readme",
+  "homepage": "https://github.com/MatteoGioioso/lambda-debugger#readme",
   "dependencies": {
     "aws-sdk": "^2.803.0",
+    "ws": "^7.4.1"
   }
 }
