@@ -1,0 +1,25 @@
+#!/bin/sh
+set -eo pipefail
+
+echo "[LAMBDA DEBUGGER] Starting custom runtime..."
+
+if [ -z "$NODE_RUNTIME_PATH" ]; then
+  export NODE_RUNTIME_PATH=/opt/nodejs/node
+fi
+
+if [ -n "$AWS_LAMBDA_FUNCTION_MEMORY_SIZE" ]; then
+  new_space=$(($AWS_LAMBDA_FUNCTION_MEMORY_SIZE / 10))
+  semi_space=$((new_space / 2))
+  old_space=$((AWS_LAMBDA_FUNCTION_MEMORY_SIZE - new_space))
+  MEMORY_ARGS=(
+    "--max-semi-space-size=$semi_space"
+    "--max-old-space-size=$old_space"
+  )
+fi
+
+export LAMBDA_DEBUGGER_OUTPUT=lambda-debugger-output
+
+mkdir /tmp/"$LAMBDA_DEBUGGER_OUTPUT"
+
+export NODE_PATH=/var/task/node_modules:/var/node_modules:/node_modules:/opt/nodejs/node_modules:/var/runtime:/var/task:/var/runtime/node_modules:/opt/node/node_modules
+"$NODE_RUNTIME_PATH" --expose-gc "${MEMORY_ARGS[@]}" /opt/nodejs/index.js

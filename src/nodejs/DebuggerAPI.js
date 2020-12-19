@@ -5,26 +5,25 @@ class DebuggerAPI {
         return this._files;
     }
 
-    messagesCodeNameSpace = {
-        CONTINUE: 10,
-        ENABLE: 11,
-        SET_BREAK_POINT: 12,
-        GET_SCRIPT_CODE: 13,
-        GET_OBJECT: 14,
-        STEP_OVER: 15,
-        STEP_INTO: 16,
-        RESUME: 17,
-        GET_POSSIBLE_BREAKPOINTS: 18,
-        STEP_OUT: 19,
-        AWAIT_PROMISE: 20,
-        ENABLE_ASYNC_TRACKING: 21
-    }
-
     constructor({url}) {
         this._url = url
         this._PROJECT_ROOT = process.env.PROJECT_ROOT
         this._files = {};
         this._eventListeners = {};
+        this.messagesCodeNameSpace = {
+            CONTINUE: 10,
+            ENABLE: 11,
+            SET_BREAK_POINT: 12,
+            GET_SCRIPT_CODE: 13,
+            GET_OBJECT: 14,
+            STEP_OVER: 15,
+            STEP_INTO: 16,
+            RESUME: 17,
+            GET_POSSIBLE_BREAKPOINTS: 18,
+            STEP_OUT: 19,
+            AWAIT_PROMISE: 20,
+            ENABLE_ASYNC_TRACKING: 21
+        }
     }
 
     initClient(){
@@ -109,17 +108,6 @@ class DebuggerAPI {
             }
 
             this._ws.on('message', eventListener)
-        })
-    }
-
-    waitForDebugger(){
-        const id = this._generateBigIntId(this.messagesCodeNameSpace.CONTINUE)
-        this._ws.send(JSON.stringify({
-            method: 'Runtime.runIfWaitingForDebugger',
-            id
-        }))
-        return this._attachTemporaryResponseEvent((data) => {
-            return data.method === 'Debugger.paused'
         })
     }
 
@@ -266,23 +254,6 @@ class DebuggerAPI {
         return finalObject
     }
 
-    async _resolveIfPromise(obj){
-        if (obj.value.className === 'AsyncFunction'){
-            const id = this._generateBigIntId(this.messagesCodeNameSpace.AWAIT_PROMISE)
-            this._ws.send(this._createPayload({
-                method: 'Runtime.awaitPromise',
-                params: {
-                    promiseObjectId: obj.value.objectId
-                },
-                id
-            }))
-
-            return this._attachTemporaryResponseEvent(data => {
-                return data.id === id
-            })
-        }
-    }
-    
     async getStackForCurrentStep(stepOver){
         let stack = {};
         let pausedExecutionMeta;
@@ -295,7 +266,6 @@ class DebuggerAPI {
         for await (const callFrame of pausedExecutionMeta.params.callFrames) {
             // If the top of the stack is on an internal nodejs function
             // we will automatically step over the function call
-            // console.log(callFrame)
             if (this._isTopOfTheStackInternal(callFrame)){
                 return this.getStackForCurrentStep(true)
             }
@@ -326,7 +296,8 @@ class DebuggerAPI {
                             stack[this._getStackKey(callFrame)].local[obj.name] = objectType
                             break;
                         default:
-                            stack[this._getStackKey(callFrame)].local[obj.name] = obj.value.value || 'undefined'
+                            stack[this._getStackKey(callFrame)]
+                                .local[obj.name] = obj.value.value || 'undefined'
                     }
                 }
             }

@@ -1,12 +1,12 @@
 const { DebuggerAPI } = require("./DebuggerAPI");
+const {Collector} = require("./Collector");
+
 const {
     DEBUGGER_FULL_URL,
-    ARTIFACT_FOLDER,
     START_LINE
 } = process.env
 const api = new DebuggerAPI({url: DEBUGGER_FULL_URL});
-const path = require('path')
-const fs = require('fs')
+const collector = new Collector()
 const executions = [];
 
 const recordExecution = async () => {
@@ -18,17 +18,10 @@ const recordExecution = async () => {
 
 process.on('beforeExit', async () => {
     try {
-        const html = await fs.promises.readFile(path.join(__dirname, 'index.html'), 'utf8');
-        const debugData = JSON.stringify(executions, null, 2)
-        const filesData = JSON.stringify(api.files, null, 2)
-        const newHtml = html
-            .replace('//---DEBUG.JSON---//', debugData)
-            .replace('//---FILES.JSON---//', filesData)
-
-        await fs.promises.writeFile(path.join(__dirname, '../../tmp/index.html'), newHtml)
-
+        await collector.injectDebuggerOutputIntoHtml(executions, api.files)
+        await collector.sendToDest()
+        await collector.cleanUpFiles()
         api.terminateClient()
-
         process.exit(0)
     } catch (e) {
         console.log(e.message, e.stack)

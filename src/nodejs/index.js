@@ -7,6 +7,9 @@ const {logger} = require('./logger')
 
 const {
     LAMBDA_TASK_ROOT,
+    LAMBDA_DEBUGGER_DEST_BUCKET,
+    LAMBDA_DEBUGGER_OUTPUT,
+    LAMBDA_DEBUGGER_DEBUG,
     _HANDLER,
 } = process.env
 const runtimeAPI = new RuntimeAPI()
@@ -34,8 +37,10 @@ function forkDebuggerProcess(){
             env: {
                 DEBUGGER_FULL_URL: inspector.url(),
                 PROJECT_ROOT: LAMBDA_TASK_ROOT,
-                ARTIFACT_FOLDER: '/tmp',
-                START_LINE: 72
+                LAMBDA_DEBUGGER_OUTPUT: path.join('/tmp', LAMBDA_DEBUGGER_OUTPUT),
+                LAMBDA_DEBUGGER_DEST_BUCKET,
+                LAMBDA_DEBUGGER_DEBUG,
+                START_LINE: 77
             },
         },
     )
@@ -47,6 +52,7 @@ async function start() {
         handler = getHandler()
     } catch (e) {
         await runtimeAPI.initError(e)
+        logger(e.message, e.stack)
         return process.exit(1)
     }
     tryProcessEvents(handler)

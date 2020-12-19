@@ -1,21 +1,22 @@
 const fs = require('fs');
 const S3 = require('aws-sdk/clients/s3')
-const Path = require('path');
+const path = require('path');
 const {logger} = require('./logger')
 
 const s3Client = new S3();
 
 class Collector {
     constructor() {
-        this.OUTPUT_PATH = `/tmp/${process.env.LAMBDA_debugger_OUTPUT}`
-        this.S3_NAME_SPACE = `${process.env.LAMBDA_debugger_OUTPUT}/${process.env.AWS_LAMBDA_FUNCTION_NAME}`
+        this.OUTPUT_PATH = `/tmp/${process.env.LAMBDA_DEBUGGER_OUTPUT}`
+        this.DEST_BUCKET = process.env.LAMBDA_DEBUGGER_DEST_BUCKET
+        this.S3_NAME_SPACE = `${process.env.LAMBDA_DEBUGGER_OUTPUT}/${process.env.AWS_LAMBDA_FUNCTION_NAME}`
     }
 
     async cleanUpFiles(){
         const path = this.OUTPUT_PATH
         if (fs.existsSync(path)) {
             fs.readdirSync(path).forEach((file, index) => {
-                const curPath = Path.join(path, file);
+                const curPath = path.join(path, file);
                 fs.unlinkSync(curPath);
                 logger(`${file} deleted`)
             });
@@ -24,24 +25,35 @@ class Collector {
         logger("/tmp directory is now empty")
     }
 
+    async injectDebuggerOutputIntoHtml(executions, files){
+        const html = await fs.promises.readFile(path.join(__dirname, 'index.html'), 'utf8');
+        const debugData = JSON.stringify(executions, null, 2)
+        const filesData = JSON.stringify(files, null, 2)
+        const newHtml = html
+            .replace('//---DEBUG.JSON---//', debugData)
+            .replace('//---FILES.JSON---//', filesData)
+
+        await fs.promises.writeFile(path.join(this.OUTPUT_PATH, '/index.html'), newHtml)
+    }
+
     async sendToDest(){
         const requests = [];
         const hash = Date.now().toString()
 
         fs.readdirSync(this.OUTPUT_PATH).forEach((file, index) => {
-            const curPath = Path.join(this.OUTPUT_PATH, file)
+            const curPath = path.join(this.OUTPUT_PATH, file)
             const data = fs.readFileSync(curPath)
             const key = `${this.S3_NAME_SPACE}/${hash}/${file}`
-            requests.push(this.uploadToS3(key, data))
+            requests.push(this._uploadToS3(key, data))
         });
 
         await Promise.all(requests)
-        logger("Flamegraph upload completed!")
+        logger("Debugger output upload completed!")
     }
 
-    async uploadToS3(key, data){
+    async _uploadToS3(key, data){
         const params = {
-            Bucket: process.env.LAMBDA_debugger_DEST_BUCKET,
+            Bucket: this.DEST_BUCKET,
             Key: key,
             Body: data,
         };
@@ -49,15 +61,8 @@ class Collector {
         const res = await s3Client.upload(params).promise()
         logger(res.Key + " uploaded")
     }
-
-    async generateFlameGraph(){
-        await flamebearer.fuelTheFire(`${this.OUTPUT_PATH}/isolate-output.json`)
-    }
 }
 
-const collector = new Collector();
-
-collector.generateFlameGraph().then(async () => {
-    await collector.sendToDest()
-    await collector.cleanUpFiles()
-})
+module.exports = {
+    Collector
+}
