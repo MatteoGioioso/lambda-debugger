@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+const {logger} = require("./logger");
 
 class DebuggerAPI {
     get files() {
@@ -24,6 +25,8 @@ class DebuggerAPI {
             AWAIT_PROMISE: 20,
             ENABLE_ASYNC_TRACKING: 21
         }
+
+        logger(this._PROJECT_ROOT)
     }
 
     initClient(){
@@ -67,8 +70,9 @@ class DebuggerAPI {
     collectSourceCode(){
         const eventListener = async (buffer) => {
             const data = JSON.parse(buffer)
-            if (data.method === 'Debugger.scriptParsed' && data.params.url.includes(this._PROJECT_ROOT)){
+            if (data.method === 'Debugger.scriptParsed' && this._shouldBeTracked(data.params.url)){
                 const currentFileKey = data.params.url
+                logger(currentFileKey)
 
                 if (!this._files[currentFileKey]) {
                     const source = await this.getScriptCode(data.params.scriptId)
@@ -118,7 +122,7 @@ class DebuggerAPI {
             id
         }))
         return this._attachTemporaryResponseEvent(data => {
-            return data.method === 'Debugger.scriptParsed' && data.params.url.includes(process.env.PROJECT_ROOT)
+            return data.method === 'Debugger.scriptParsed' && data.params.url.includes('/opt/')
         })
     }
 
@@ -181,6 +185,10 @@ class DebuggerAPI {
         })
     }
 
+    _shouldBeTracked(url){
+         return url.includes(this._PROJECT_ROOT) || url.includes('/opt/')
+    }
+
     getPossibleBreakpoints(scriptId, startLine, endLine){
         this._ws.send(this._createPayload({
             id: this.messagesCodeNameSpace.GET_POSSIBLE_BREAKPOINTS,
@@ -227,7 +235,7 @@ class DebuggerAPI {
     _isTopOfTheStackInternal(callFrame){
         const callFrameId = JSON.parse(callFrame.callFrameId)
         // ordinal is the stack order if 0 means that we are at the top
-        return callFrameId.ordinal === 0 && !callFrame.url.includes(process.env.PROJECT_ROOT)
+        return callFrameId.ordinal === 0 && !this._shouldBeTracked(callFrame.url)
     }
 
     _initStackFrame(stack, callFrame){
@@ -270,7 +278,7 @@ class DebuggerAPI {
                 return this.getStackForCurrentStep(true)
             }
 
-            if (!callFrame.url.includes(process.env.PROJECT_ROOT)) continue;
+            if (!this._shouldBeTracked(callFrame.url)) continue;
 
             const callFrameId = JSON.parse(callFrame.callFrameId)
             this._initStackFrame(stack, callFrame)

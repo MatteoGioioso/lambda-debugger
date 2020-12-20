@@ -7,9 +7,12 @@ const s3Client = new S3();
 
 class Collector {
     constructor() {
-        this.OUTPUT_PATH = `/tmp/${process.env.LAMBDA_DEBUGGER_OUTPUT}`
+        this.OUTPUT_PATH = path.join('/tmp', process.env.LAMBDA_DEBUGGER_OUTPUT)
         this.DEST_BUCKET = process.env.LAMBDA_DEBUGGER_DEST_BUCKET
-        this.S3_NAME_SPACE = `${process.env.LAMBDA_DEBUGGER_OUTPUT}/${process.env.AWS_LAMBDA_FUNCTION_NAME}`
+        this.S3_NAME_SPACE = path.join(
+            process.env.LAMBDA_DEBUGGER_OUTPUT,
+            process.env.AWS_LAMBDA_FUNCTION_NAME
+        )
     }
 
     async cleanUpFiles(){

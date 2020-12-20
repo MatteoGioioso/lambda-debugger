@@ -1,3 +1,4 @@
+const {logger} = require("./logger");
 const { DebuggerAPI } = require("./DebuggerAPI");
 const {Collector} = require("./Collector");
 
@@ -30,6 +31,7 @@ process.on('beforeExit', async () => {
 });
 
 (async function () {
+    logger('Starting debugger')
     await api.initClient()
     api.collectSourceCode()
     const scriptInfo = await api.enable();

@@ -10,6 +10,10 @@ const {
     LAMBDA_DEBUGGER_DEST_BUCKET,
     LAMBDA_DEBUGGER_OUTPUT,
     LAMBDA_DEBUGGER_DEBUG,
+    AWS_LAMBDA_FUNCTION_NAME,
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+    AWS_SESSION_TOKEN,
     _HANDLER,
 } = process.env
 const runtimeAPI = new RuntimeAPI()
@@ -20,6 +24,7 @@ function waitForDebuggerConnection(debuggerProcess){
     return new Promise((resolve, reject) => {
         debuggerProcess.once('message', (mes) => {
             if (mes === 'brokerConnect') {
+                logger('Debugger connected!')
                 return resolve('connected');
             }
 
@@ -37,16 +42,24 @@ function forkDebuggerProcess(){
             env: {
                 DEBUGGER_FULL_URL: inspector.url(),
                 PROJECT_ROOT: LAMBDA_TASK_ROOT,
-                LAMBDA_DEBUGGER_OUTPUT: path.join('/tmp', LAMBDA_DEBUGGER_OUTPUT),
+                START_LINE: 92,
+                LAMBDA_DEBUGGER_OUTPUT,
                 LAMBDA_DEBUGGER_DEST_BUCKET,
                 LAMBDA_DEBUGGER_DEBUG,
-                START_LINE: 77
+                AWS_ACCESS_KEY_ID,
+                AWS_SECRET_ACCESS_KEY,
+                AWS_SESSION_TOKEN,
+                AWS_LAMBDA_FUNCTION_NAME
             },
         },
     )
 }
 
 async function start() {
+    logger(LAMBDA_TASK_ROOT)
+    logger(LAMBDA_DEBUGGER_OUTPUT)
+    logger(LAMBDA_DEBUGGER_DEST_BUCKET)
+
     let handler
     try {
         handler = getHandler()
@@ -76,13 +89,13 @@ async function processEvents(handler) {
             inspector.open(9229, 'localhost', false)
             const debuggerProcess = forkDebuggerProcess();
             await waitForDebuggerConnection(debuggerProcess)
+            console.log("Start debugger")
             result = await handler(event, context)
             inspector.close()
         } catch (e) {
             logger(e.message)
             await runtimeAPI.invokeError(e, context)
             // TODO: maybe is not needed
-            // test for error
             continue
         }
 
