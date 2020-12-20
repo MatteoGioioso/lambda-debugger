@@ -12,7 +12,8 @@ const debuggerProxy = fork(
         env: {
             DEBUGGER_FULL_URL: inspector.url(),
             PROJECT_ROOT: 'lambda-debugger',
-            ARTIFACT_FOLDER: 'tmp/',
+            LAMBDA_DEBUGGER_OUTPUT: path.join(__dirname, '/tmp'),
+            LAMBDA_DEBUGGER_DEST_BUCKET: '/',
             START_LINE: 33
         },
     },

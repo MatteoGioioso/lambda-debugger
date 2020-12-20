@@ -1,0 +1,5 @@
+.idea/
+docs/
+handler/
+test*
+__test__

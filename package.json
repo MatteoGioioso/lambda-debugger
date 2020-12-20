@@ -1,26 +1,27 @@
 {
   "name": "lambda-debugger",
-  "version": "1.0.0",
+  "version": "0.1.5",
   "description": "",
-  "main": "server.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MatteoGioioso/lambda-debugger.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Matteo Gioioso",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/MatteoGioioso/lambda-debugger/issues"
   },
   "homepage": "https://github.com/MatteoGioioso/lambda-debugger#readme",
   "dependencies": {
-    "execa": "^5.0.0",
-    "semantic-release": "^17.3.0",
+    "aws-sdk": "^2.803.0",
     "ws": "^7.4.1"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
   }
 }

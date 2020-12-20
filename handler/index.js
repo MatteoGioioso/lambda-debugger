@@ -1,20 +1,34 @@
-const {multiply,add, myObject,buildObject} = require("../lib/myFunctions");
+const {multiply,add, myObject,buildObject} = require("./lib/myFunctions");
+const lambdaDebugger = require('lambda-debugger')
 
 function myPromise() {
     return Promise.resolve(20)
 }
 
-async function handler() {
-    const firstNumber = 3
-    const secondNumber = 6
-    const addition = add(firstNumber, secondNumber);
-    buildObject(myObject)
-    console.log(addition)
-    const multiplier = await myPromise()
-    const multiplication = multiply(addition, multiplier)
-    console.log(multiplication)
+async function handler(event, context) {
+    try {
+        console.log(event, context)
+        const firstNumber = 3
+        const secondNumber = 6
+        const addition = add(firstNumber, secondNumber);
+        buildObject(myObject)
+        console.log(addition)
+        const multiplier = await myPromise()
+        const multiplication = multiply(addition, multiplier)
+        console.log(multiplication)
+        return {
+            body: 'done',
+            statusCode: 200
+        }
+
+    } catch (e){
+        console.log(e.message, e.stack)
+        return {
+            body: 'oops',
+            statusCode: 500
+        }
+    }
 }
 
-module.exports = {
-    handler
-}
+exports.handler = lambdaDebugger(handler)
+
