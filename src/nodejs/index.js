@@ -42,7 +42,7 @@ function forkDebuggerProcess(){
             env: {
                 DEBUGGER_FULL_URL: inspector.url(),
                 PROJECT_ROOT: LAMBDA_TASK_ROOT,
-                START_LINE: 92,
+                START_LINE: 136,
                 LAMBDA_DEBUGGER_OUTPUT,
                 LAMBDA_DEBUGGER_DEST_BUCKET,
                 LAMBDA_DEBUGGER_DEBUG,
@@ -89,7 +89,6 @@ async function processEvents(handler) {
             inspector.open(9229, 'localhost', false)
             const debuggerProcess = forkDebuggerProcess();
             await waitForDebuggerConnection(debuggerProcess)
-            console.log("Start debugger")
             result = await handler(event, context)
             inspector.close()
         } catch (e) {

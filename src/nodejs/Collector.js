@@ -16,21 +16,25 @@ class Collector {
     }
 
     async cleanUpFiles(){
-        const path = this.OUTPUT_PATH
-        if (fs.existsSync(path)) {
-            fs.readdirSync(path).forEach((file, index) => {
-                const curPath = path.join(path, file);
+        const outputPath = this.OUTPUT_PATH
+        if (fs.existsSync(outputPath)) {
+            fs.readdirSync(outputPath).forEach((file, index) => {
+                const curPath = path.join(outputPath, file);
                 fs.unlinkSync(curPath);
                 logger(`${file} deleted`)
             });
-            fs.rmdirSync(path);
+            fs.rmdirSync(outputPath);
         }
         logger("/tmp directory is now empty")
     }
 
     async injectDebuggerOutputIntoHtml(executions, files){
+        // Cut the custom runtime executions and hide it from the user
+        // As long as the runtime does not change it's implementation the position
+        // are going to be the same.
+        const onlyFunctionsExecution = executions.slice(2).slice(0, -1)
         const html = await fs.promises.readFile(path.join(__dirname, 'index.html'), 'utf8');
-        const debugData = JSON.stringify(executions, null, 2)
+        const debugData = JSON.stringify(onlyFunctionsExecution, null, 2)
         const filesData = JSON.stringify(files, null, 2)
         const newHtml = html
             .replace('//---DEBUG.JSON---//', debugData)
