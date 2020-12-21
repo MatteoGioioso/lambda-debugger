@@ -3,6 +3,8 @@ debugger.json
 tmp
 deploy-test.sh
 testTemplate.yaml
+testOutput.yaml
+request.http
 
 # Logs
 logs

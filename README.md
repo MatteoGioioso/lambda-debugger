@@ -1,4 +1,4 @@
-![Lambda Debugger](docs/logo.png)
+![Lambda Debugger](docs/logov2.png)
 
 **Time travel offline debugging** for your lambda function.
 
