@@ -1,13 +1,11 @@
 const {logger} = require("./logger");
 const { DebuggerAPI } = require("./DebuggerAPI");
-const {Collector} = require("./Collector");
 
 const {
     DEBUGGER_FULL_URL,
     START_LINE
 } = process.env
 const api = new DebuggerAPI({url: DEBUGGER_FULL_URL});
-const collector = new Collector()
 const executions = [];
 
 const recordExecution = async () => {
@@ -19,9 +17,8 @@ const recordExecution = async () => {
 
 process.on('beforeExit', async () => {
     try {
-        await collector.injectDebuggerOutputIntoHtml(executions, api.files)
-        await collector.sendToDest()
-        await collector.cleanUpFiles()
+        logger('Start post processing')
+        process.send({executions, files: api.files})
         api.terminateClient()
         process.exit(0)
     } catch (e) {

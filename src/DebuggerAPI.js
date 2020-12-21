@@ -219,7 +219,7 @@ class DebuggerAPI {
     _filterLocalScopeChain(callFrame) {
         return callFrame
             .scopeChain
-            .filter(sc => sc.type === 'local')
+            .filter(sc => sc.type === 'local' || sc.type === 'block' || sc.type === 'closure' )
     }
 
     _getFileNameFromPath(callFrame){

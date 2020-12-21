@@ -48,5 +48,54 @@ describe('DebuggerAPI', function () {
             expect(shouldBeTracked).toBe(test.want)
         });
 
+    });
+
+    [
+        {
+            name: 'should filter scope',
+            args: {
+                callFrame: {
+                    scopeChain: [
+                        {
+                            type: 'local'
+                        },
+                        {
+                            type: 'global'
+                        },
+                        {
+                            type: 'local'
+                        },
+                        {
+                            type: 'closure'
+                        }
+                    ]
+                }
+            },
+            want: {
+                length: 3,
+                result: [
+                    {
+                        type: 'local'
+                    },
+                    {
+                        type: 'local'
+                    },
+                    {
+                        type: 'closure'
+                    }
+                ]
+            }
+        },
+
+    ].forEach(test => {
+        it(test.name, function () {
+            const api = new DebuggerAPI({url: ''})
+
+            const filteredScope = api._filterLocalScopeChain(test.args.callFrame);
+
+            expect(filteredScope).toEqual(test.want.result)
+            expect(filteredScope).toHaveLength(test.want.length)
+        });
     })
+
 });

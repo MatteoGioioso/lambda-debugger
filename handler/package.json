@@ -13,6 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lambda-debugger": "^0.1.5"
+    "lambda-debugger": "^0.1.6"
   }
 }
