@@ -4,7 +4,7 @@
 
 Lambda debugger records all your function 
 execution, so you can replay it at a later time.
-Stop scattering your code with `console.log`, `fmt.Println`.
+Stop scattering your code with `console.log`.
 
 ## Installation
 
