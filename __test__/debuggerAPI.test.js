@@ -86,7 +86,25 @@ describe('DebuggerAPI', function () {
                 ]
             }
         },
-
+        {
+            name: 'should filter scope',
+            args: {
+                callFrame: {
+                    scopeChain: [
+                        {
+                            type: 'global'
+                        },
+                        {
+                            type: 'global'
+                        }
+                    ]
+                }
+            },
+            want: {
+                length: 0,
+                result: []
+            }
+        }
     ].forEach(test => {
         it(test.name, function () {
             const api = new DebuggerAPI({url: ''})

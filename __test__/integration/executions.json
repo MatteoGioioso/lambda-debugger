@@ -1,0 +1,2623 @@
+
+    [
+  {
+    "handler(), index.js:9": {
+      "meta": {
+        "current": 9,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": "undefined",
+        "secondNumber": "undefined",
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "handler(), index.js:10": {
+      "meta": {
+        "current": 10,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": "undefined",
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "handler(), index.js:11": {
+      "meta": {
+        "current": 11,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "add(), myFunctions.js:15": {
+      "meta": {
+        "current": 15,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "subFirstNumber": 3,
+        "subSecondNumber": 6,
+        "age": "undefined",
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "handler(), index.js:11": {
+      "meta": {
+        "current": 11,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "add(), myFunctions.js:15": {
+      "meta": {
+        "current": 15,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "subFirstNumber": 3,
+        "subSecondNumber": 6,
+        "age": "undefined",
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "handler(), index.js:11": {
+      "meta": {
+        "current": 11,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "add(), myFunctions.js:16": {
+      "meta": {
+        "current": 16,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "subFirstNumber": 3,
+        "subSecondNumber": 6,
+        "age": 36,
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "handler(), index.js:11": {
+      "meta": {
+        "current": 11,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "internal(), myFunctions.js:6": {
+      "meta": {
+        "current": 6,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "int": "undefined",
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "add(), myFunctions.js:16": {
+      "meta": {
+        "current": 16,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "subFirstNumber": 3,
+        "subSecondNumber": 6,
+        "age": 36,
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "handler(), index.js:11": {
+      "meta": {
+        "current": 11,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 3
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "internal(), myFunctions.js:7": {
+      "meta": {
+        "current": 7,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "int": 3,
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "add(), myFunctions.js:16": {
+      "meta": {
+        "current": 16,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "subFirstNumber": 3,
+        "subSecondNumber": 6,
+        "age": 36,
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "handler(), index.js:11": {
+      "meta": {
+        "current": 11,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 3
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "internal(), myFunctions.js:7": {
+      "meta": {
+        "current": 7,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "int": 3,
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "add(), myFunctions.js:16": {
+      "meta": {
+        "current": 16,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "subFirstNumber": 3,
+        "subSecondNumber": 6,
+        "age": 36,
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "handler(), index.js:11": {
+      "meta": {
+        "current": 11,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 3
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "add(), myFunctions.js:17": {
+      "meta": {
+        "current": 17,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "subFirstNumber": 3,
+        "subSecondNumber": 6,
+        "age": 36,
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "handler(), index.js:11": {
+      "meta": {
+        "current": 11,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "add(), myFunctions.js:17": {
+      "meta": {
+        "current": 17,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "subFirstNumber": 3,
+        "subSecondNumber": 6,
+        "age": 36,
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "handler(), index.js:11": {
+      "meta": {
+        "current": 11,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": "undefined",
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "handler(), index.js:12": {
+      "meta": {
+        "current": 12,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "buildObject(), myFunctions.js:11": {
+      "meta": {
+        "current": 11,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "obj": {
+          "name": "matteo",
+          "age": 36
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "handler(), index.js:12": {
+      "meta": {
+        "current": 12,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "buildObject(), myFunctions.js:12": {
+      "meta": {
+        "current": 12,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "obj": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    },
+    "handler(), index.js:12": {
+      "meta": {
+        "current": 12,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "handler(), index.js:13": {
+      "meta": {
+        "current": 13,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "handler(), index.js:14": {
+      "meta": {
+        "current": 14,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "myPromise(), index.js:4": {
+      "meta": {
+        "current": 4,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    },
+    "handler(), index.js:14": {
+      "meta": {
+        "current": 14,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "myPromise(), index.js:4": {
+      "meta": {
+        "current": 4,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    },
+    "handler(), index.js:14": {
+      "meta": {
+        "current": 14,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": "undefined",
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    },
+    "anonymous(), index.js:69": {
+      "meta": {
+        "current": 69,
+        "start": 0,
+        "end": 81,
+        "scriptId": "87",
+        "ordinal": 2
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js",
+      "local": {
+        "functions": {
+          "handler": {},
+          "fork": {},
+          "logger": {},
+          "waitForDebuggerConnection": {},
+          "waitForDebuggerResults": {},
+          "forkDebuggerProcess": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "debuggerProcess": {
+          "_eventsCount": 1,
+          "_closesNeeded": 2,
+          "_closesGot": 0,
+          "connected": true,
+          "signalCode": null,
+          "exitCode": null,
+          "killed": false,
+          "spawnfile": "/Users/madeo/.nvm/versions/node/v13.11.0/bin/node",
+          "pid": 81188,
+          "stdin": null,
+          "stdout": null,
+          "stderr": null,
+          "_handleQueue": null,
+          "_pendingMessage": null,
+          "domain": null,
+          "Symbol(kCapture)": false
+        },
+        "placeholder": "undefined",
+        "result": "undefined",
+        "results": "undefined",
+        "__dirname": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src",
+        "inspector": {},
+        "path": {
+          "sep": "/",
+          "delimiter": ":"
+        },
+        "collector": {
+          "OUTPUT_PATH": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+          "S3_NAME_SPACE": "../Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp/testFunction"
+        },
+        "LAMBDA_TASK_ROOT": "/Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction",
+        "LAMBDA_DEBUGGER_DEST_BUCKET": "undefined",
+        "LAMBDA_DEBUGGER_OUTPUT": "..//Users/madeo/Development/Tools/lambda-debugger/__test__/integration/tmp",
+        "LAMBDA_DEBUGGER_DEBUG": "ALL",
+        "LAMBDA_DEBUGGER_ENV": "ci",
+        "AWS_LAMBDA_FUNCTION_NAME": "testFunction",
+        "AWS_ACCESS_KEY_ID": "undefined",
+        "AWS_SECRET_ACCESS_KEY": "undefined",
+        "AWS_SESSION_TOKEN": "undefined"
+      }
+    }
+  },
+  {
+    "handler(), index.js:15": {
+      "meta": {
+        "current": 15,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": 20,
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    }
+  },
+  {
+    "multiply(), myFunctions.js:21": {
+      "meta": {
+        "current": 21,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "total": 45,
+        "multiplier": 20,
+        "result": "undefined",
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    },
+    "handler(), index.js:15": {
+      "meta": {
+        "current": 15,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": 20,
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    }
+  },
+  {
+    "multiply(), myFunctions.js:22": {
+      "meta": {
+        "current": 22,
+        "start": 0,
+        "end": 31,
+        "scriptId": "86",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js",
+      "local": {
+        "functions": {
+          "internal": {}
+        },
+        "total": 45,
+        "multiplier": 20,
+        "result": 900,
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    },
+    "handler(), index.js:15": {
+      "meta": {
+        "current": 15,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 1
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": 20,
+        "multiplication": "undefined",
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    }
+  },
+  {
+    "handler(), index.js:16": {
+      "meta": {
+        "current": 16,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": 20,
+        "multiplication": 900,
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    }
+  },
+  {
+    "handler(), index.js:17": {
+      "meta": {
+        "current": 17,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "firstNumber": 3,
+        "secondNumber": 6,
+        "addition": 45,
+        "multiplier": 20,
+        "multiplication": 900,
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    }
+  },
+  {
+    "handler(), index.js:20": {
+      "meta": {
+        "current": 20,
+        "start": 0,
+        "end": 33,
+        "scriptId": "85",
+        "ordinal": 0
+      },
+      "file": "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js",
+      "local": {
+        "functions": {
+          "multiply": {},
+          "add": {},
+          "buildObject": {},
+          "myPromise": {}
+        },
+        "event": {
+          "path": "/",
+          "httpMethod": "GET",
+          "queryStringParameters": null,
+          "pathParameters": null,
+          "body": null
+        },
+        "context": {
+          "memoryLimitInMB": "1024",
+          "awsRequestId": "1g941419-eecf-41b8-8af2-09636522f86d"
+        },
+        "myObject": {
+          "name": "matteo",
+          "age": 36,
+          "anotherProperty": 3
+        }
+      }
+    }
+  }
+]

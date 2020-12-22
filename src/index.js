@@ -11,6 +11,7 @@ const {
     LAMBDA_DEBUGGER_DEST_BUCKET,
     LAMBDA_DEBUGGER_OUTPUT,
     LAMBDA_DEBUGGER_DEBUG,
+    LAMBDA_DEBUGGER_ENV,
     AWS_LAMBDA_FUNCTION_NAME,
     AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY,
@@ -47,7 +48,7 @@ function forkDebuggerProcess() {
             env: {
                 DEBUGGER_FULL_URL: inspector.url(),
                 PROJECT_ROOT: LAMBDA_TASK_ROOT,
-                START_LINE: 67,
+                START_LINE: 69,
                 LAMBDA_DEBUGGER_OUTPUT,
                 LAMBDA_DEBUGGER_DEST_BUCKET,
                 LAMBDA_DEBUGGER_DEBUG,
@@ -70,8 +71,11 @@ module.exports = function (handler) {
         inspector.close()
         const results = await waitForDebuggerResults(debuggerProcess)
         await collector.injectDebuggerOutputIntoHtml(results.executions, results.files)
-        await collector.sendToDest()
-        await collector.cleanUpFiles()
+        // Workaround for testing
+        if (LAMBDA_DEBUGGER_ENV !== 'ci' ){
+            await collector.sendToDest()
+            await collector.cleanUpFiles()
+        }
         return result
     }
 }

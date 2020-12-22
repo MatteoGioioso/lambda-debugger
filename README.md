@@ -1,19 +1,33 @@
 ![Lambda Debugger](docs/logov2.png)
 
-**Time travel offline debugging** for your lambda function.
+**Time travel offline debugging** for your Nodejs Lambda function.
 
 Lambda debugger records all your function 
 execution, so you can replay it at a later time.
 Stop scattering your code with `console.log`, `fmt.Println`.
 
-## Supported runtime
+## Installation
 
-- Nodejs
+```bash
+npm install lambda-debugger --save
+```
+
+## Usage
+
+Just require this module inside your handler
+
+```js
+const lambdaDebugger = require("lambda-debugger");
+
+exports.handler = lambdaDebugger((event, context,callback) => {
+    callback(null, "Hello Lambda Debugger!");
+});
+```
+
+
 
 ## Roadmap
 
 - Support source maps for javascript
-- Support Go runtime
-- Online
 
 ### Currently under development

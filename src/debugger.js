@@ -18,11 +18,15 @@ const recordExecution = async () => {
 process.on('beforeExit', async () => {
     try {
         logger('Start post processing')
-        process.send({executions, files: api.files})
-        api.terminateClient()
-        process.exit(0)
+        process.send({executions, files: api.files}, () => {
+            // Send process is asynchronous therefore the child process must
+            // be closed after the full message has being sent
+            logger('Done sending')
+            api.terminateClient()
+            process.exit(0)
+        })
     } catch (e) {
-        console.log(e.message, e.stack)
+        logger(e.message, e.stack)
         process.exit(1)
     }
 });
@@ -33,9 +37,14 @@ process.on('beforeExit', async () => {
     api.collectSourceCode()
     const scriptInfo = await api.enable();
     await api.setBreakpoint(
-        Number(START_LINE), // this could be arbitrarily set depending on the final code
+        Number(START_LINE) - 1, // this could be arbitrarily set depending on the final code
         scriptInfo.params.scriptId
     )
     process.send('brokerConnect');
     await recordExecution()
 })();
+
+process.on('error', e => {
+    console.log("ERROR !!!!!")
+    console.log(e.message)
+})

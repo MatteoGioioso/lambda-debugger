@@ -1,0 +1,24 @@
+
+    {
+  "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/index.js": {
+    "code": "const {multiply,add, myObject,buildObject} = require(\"./lib/myFunctions\");\nconst lambdaDebugger = require('lambda-debugger')\n\nfunction myPromise() {\n    return Promise.resolve(20)\n}\n\nasync function handler(event, context) {\n    try {\n        const firstNumber = 3\n        const secondNumber = 6\n        const addition = add(firstNumber, secondNumber);\n        buildObject(myObject)\n        console.log(addition)\n        const multiplier = await myPromise()\n        const multiplication = multiply(addition, multiplier)\n        console.log(multiplication)\n        return {\n            body: 'done',\n            statusCode: 200\n        }\n\n    } catch (e){\n        console.log(e.message, e.stack)\n        return {\n            body: 'oops',\n            statusCode: 500\n        }\n    }\n}\n\nexports.handler = lambdaDebugger(handler)\n\n",
+    "scriptId": "85",
+    "sourceMapURL": "",
+    "hasSourceURL": false,
+    "hasCode": true
+  },
+  "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/lib/myFunctions.js": {
+    "code": "const myObject = {\n    name: 'matteo',\n    age: 36,\n}\n\nfunction internal() {\n    let int = 3\n    return 3 * int\n}\n\nfunction buildObject(obj) {\n    obj.anotherProperty = 3\n}\n\nfunction add(subFirstNumber, subSecondNumber) {\n    const {age} = myObject;\n    internal()\n    return subFirstNumber + subSecondNumber + age\n}\n\nfunction multiply(total, multiplier) {\n    const result = total * multiplier\n    return result\n}\n\nmodule.exports = {\n    add,\n    multiply,\n    myObject,\n    buildObject\n}\n",
+    "scriptId": "86",
+    "sourceMapURL": "",
+    "hasSourceURL": false,
+    "hasCode": true
+  },
+  "file:///Users/madeo/Development/Tools/lambda-debugger/__test__/integration/testFunction/node_modules/lambda-debugger/src/index.js": {
+    "code": "const inspector = require('inspector')\nconst path = require('path')\nconst fork = require('child_process').fork\nconst {logger} = require('./logger')\nconst {Collector} = require(\"./Collector\");\nconst collector = new Collector()\n\nconst CALLBACK_USED = Symbol('CALLBACK_USED')\nconst {\n    LAMBDA_TASK_ROOT,\n    LAMBDA_DEBUGGER_DEST_BUCKET,\n    LAMBDA_DEBUGGER_OUTPUT,\n    LAMBDA_DEBUGGER_DEBUG,\n    LAMBDA_DEBUGGER_ENV,\n    AWS_LAMBDA_FUNCTION_NAME,\n    AWS_ACCESS_KEY_ID,\n    AWS_SECRET_ACCESS_KEY,\n    AWS_SESSION_TOKEN,\n} = process.env\n\nfunction waitForDebuggerConnection(debuggerProcess) {\n    return new Promise((resolve, reject) => {\n        debuggerProcess.once('message', (mes) => {\n            if (mes === 'brokerConnect') {\n                logger('Debugger connected!')\n                return resolve('connected');\n            }\n\n            return reject('failed to connect');\n        });\n    })\n}\n\nfunction waitForDebuggerResults(debuggerProcess) {\n    return new Promise((resolve, reject) => {\n        debuggerProcess.once('message', (mes) => {\n            return resolve(mes);\n        });\n    })\n}\n\nfunction forkDebuggerProcess() {\n    return fork(\n        path.join(__dirname, 'debugger.js'),\n        [],\n        {\n            detached: true,\n            env: {\n                DEBUGGER_FULL_URL: inspector.url(),\n                PROJECT_ROOT: LAMBDA_TASK_ROOT,\n                START_LINE: 69,\n                LAMBDA_DEBUGGER_OUTPUT,\n                LAMBDA_DEBUGGER_DEST_BUCKET,\n                LAMBDA_DEBUGGER_DEBUG,\n                AWS_ACCESS_KEY_ID,\n                AWS_SECRET_ACCESS_KEY,\n                AWS_SESSION_TOKEN,\n                AWS_LAMBDA_FUNCTION_NAME\n            },\n        },\n    )\n}\n\nmodule.exports = function (handler) {\n    return async (event, context) => {\n        inspector.open(9229, 'localhost', false)\n        const debuggerProcess = forkDebuggerProcess();\n        await waitForDebuggerConnection(debuggerProcess)\n        let placeholder;\n        const result = await handler(event, context)\n        inspector.close()\n        const results = await waitForDebuggerResults(debuggerProcess)\n        await collector.injectDebuggerOutputIntoHtml(results.executions, results.files)\n        // Workaround for testing\n        if (LAMBDA_DEBUGGER_ENV !== 'ci' ){\n            await collector.sendToDest()\n            await collector.cleanUpFiles()\n        }\n        return result\n    }\n}\n",
+    "scriptId": "87",
+    "sourceMapURL": "",
+    "hasSourceURL": false,
+    "hasCode": true
+  }
+}

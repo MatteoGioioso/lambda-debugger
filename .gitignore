@@ -5,6 +5,7 @@ deploy-test.sh
 testTemplate.yaml
 testOutput.yaml
 request.http
+handler
 
 # Logs
 logs
