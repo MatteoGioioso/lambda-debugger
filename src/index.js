@@ -70,7 +70,11 @@ module.exports = function (handler) {
         const result = await handler(event, context)
         inspector.close()
         const results = await waitForDebuggerResults(debuggerProcess)
-        await collector.injectDebuggerOutputIntoHtml(results.executions, results.files)
+        await collector.injectDebuggerOutputIntoHtml(
+            results.executions,
+            results.files,
+            results.sourceMaps
+        )
         // Workaround for testing
         if (LAMBDA_DEBUGGER_ENV !== 'ci' ){
             await collector.sendToDest()

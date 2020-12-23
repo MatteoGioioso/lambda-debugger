@@ -1,7 +1,13 @@
 const WebSocket = require('ws');
+const fs = require('fs');
+const path = require('path')
 const {logger} = require("./logger");
 
 class DebuggerAPI {
+    get sourceMaps() {
+        return this._sourceMaps;
+    }
+
     get files() {
         return this._files;
     }
@@ -10,6 +16,7 @@ class DebuggerAPI {
         this._url = url
         this._PROJECT_ROOT = process.env.PROJECT_ROOT
         this._files = {};
+        this._sourceMaps = {};
         this._eventListeners = {};
         this.messagesCodeNameSpace = {
             CONTINUE: 10,
@@ -29,23 +36,23 @@ class DebuggerAPI {
         logger(this._PROJECT_ROOT)
     }
 
-    initClient(){
+    initClient() {
         this._ws = new WebSocket(this._url, {
             perMessageDeflate: false
         })
 
-      return new Promise((resolve, reject) => {
-          this._ws.once('open', () => {
-              resolve()
-          })
+        return new Promise((resolve, reject) => {
+            this._ws.once('open', () => {
+                resolve()
+            })
 
-          this._ws.on('error', (err) => {
-              reject(err)
-          })
-      })
+            this._ws.on('error', (err) => {
+                reject(err)
+            })
+        })
     }
 
-    terminateClient(){
+    terminateClient() {
         // Clean up all the event listeners
         Object.keys(this._eventListeners).forEach(key => {
             this._ws.removeEventListener('message', this._eventListeners[key])
@@ -53,39 +60,51 @@ class DebuggerAPI {
         this._ws.close()
         this._files = {}
         this._eventListeners = {}
+        this._sourceMaps = {}
     }
 
-    _generateBigIntId(codeNamespace){
+    _generateBigIntId(codeNamespace) {
         const bigInt = Math.floor(Math.random() * 10000000);
         return parseInt(`${codeNamespace}${bigInt}`)
     }
 
-    _createPayload({method, id, params}){
+    _createPayload({method, id, params}) {
         return JSON.stringify({
             method, id, params
         })
     }
 
     // This is an event listener
-    collectSourceCode(){
+    collectSourceCode() {
         const eventListener = async (buffer) => {
             const data = JSON.parse(buffer)
-            if (data.method === 'Debugger.scriptParsed' && this._shouldBeTracked(data.params.url)){
+            if (data.method === 'Debugger.scriptParsed' && this._shouldBeTracked(data.params.url)) {
                 const currentFileKey = data.params.url
                 logger(currentFileKey)
 
                 if (!this._files[currentFileKey]) {
                     const source = await this.getScriptCode(data.params.scriptId)
+                    const sourceMapUrl = data.params.sourceMapURL
                     this._files[currentFileKey] = {}
                     this._files[currentFileKey].code = source.result.scriptSource
                     this._files[currentFileKey].scriptId = data.params.scriptId
-                    this._files[currentFileKey].sourceMapURL = data.params.sourceMapURL
+                    this._files[currentFileKey].sourceMapURL = sourceMapUrl
                     this._files[currentFileKey].hasSourceURL = data.params.hasSourceURL
                     this._files[currentFileKey].hasCode = true
+
+                    if (!this._sourceMaps[sourceMapUrl] && sourceMapUrl) {
+                        logger(sourceMapUrl)
+                        const data = await fs
+                            .promises
+                            .readFile(path.join('.serverless', sourceMapUrl), 'utf8')
+                        this._sourceMaps[sourceMapUrl] = {}
+                        this._sourceMaps[sourceMapUrl].code = data
+                        this._sourceMaps[sourceMapUrl].hasCode = true
+                    }
                 }
             }
 
-            if (data.error){
+            if (data.error) {
                 console.error(data.error)
             }
         }
@@ -95,16 +114,16 @@ class DebuggerAPI {
         this._ws.on('message', eventListener)
     }
 
-    _attachTemporaryResponseEvent(conditionCallback){
+    _attachTemporaryResponseEvent(conditionCallback) {
         return new Promise((resolve, reject) => {
             const eventListener = (buffer) => {
                 const data = JSON.parse(buffer)
-                if (conditionCallback(data)){
+                if (conditionCallback(data)) {
                     this._ws.removeEventListener('message', eventListener)
                     return resolve(data)
                 }
 
-                if (conditionCallback(data) && data.error){
+                if (conditionCallback(data) && data.error) {
                     this._ws.removeEventListener('message', eventListener)
                     console.error(data.error)
                     return reject(data.error)
@@ -115,7 +134,7 @@ class DebuggerAPI {
         })
     }
 
-    async enable(){
+    async enable() {
         const id = this._generateBigIntId(this.messagesCodeNameSpace.ENABLE)
         this._ws.send(this._createPayload({
             method: 'Debugger.enable',
@@ -127,7 +146,7 @@ class DebuggerAPI {
         })
     }
 
-    async setBreakpoint(lineNumber, scriptId){
+    async setBreakpoint(lineNumber, scriptId) {
         const id = this._generateBigIntId(this.messagesCodeNameSpace.SET_BREAK_POINT)
         this._ws.send(JSON.stringify({
             method: 'Debugger.setBreakpoint',
@@ -144,7 +163,7 @@ class DebuggerAPI {
         })
     }
 
-    getScriptCode(scriptId){
+    getScriptCode(scriptId) {
         const id = this._generateBigIntId(this.messagesCodeNameSpace.GET_SCRIPT_CODE)
         this._ws.send(JSON.stringify({
             method: 'Debugger.getScriptSource',
@@ -156,11 +175,11 @@ class DebuggerAPI {
         })
     }
 
-    _getScopeChainObjects(objectId){
+    _getScopeChainObjects(objectId) {
         const id = this._generateBigIntId(this.messagesCodeNameSpace.GET_OBJECT)
         this._ws.send(JSON.stringify({
             method: 'Runtime.getProperties',
-            params: { objectId },
+            params: {objectId},
             id
         }))
         return this._attachTemporaryResponseEvent((data) => {
@@ -168,66 +187,47 @@ class DebuggerAPI {
         })
     }
 
-    stepOver(){
+    stepOver() {
         const id = this._generateBigIntId(this.messagesCodeNameSpace.STEP_OVER)
-        this._ws.send(this._createPayload({ id, method: 'Debugger.stepOver' }))
+        this._ws.send(this._createPayload({id, method: 'Debugger.stepOver'}))
 
         return this._attachTemporaryResponseEvent(data => {
             return data.method === 'Debugger.paused'
         })
     }
 
-    stepInto(){
+    stepInto() {
         const id = this._generateBigIntId(this.messagesCodeNameSpace.STEP_INTO)
-        this._ws.send(this._createPayload({ id, method: 'Debugger.stepInto' }))
+        this._ws.send(this._createPayload({id, method: 'Debugger.stepInto'}))
 
         return this._attachTemporaryResponseEvent(data => {
             return data.method === 'Debugger.paused'
         })
     }
 
-    _shouldBeTracked(url){
+    _shouldBeTracked(url) {
         // Exclude all node_modules, except the entrypoint of lambda-debugger
-         return (url.includes(this._PROJECT_ROOT) &&
-             !url.includes('/node_modules/')) ||
-             url.includes('/node_modules/lambda-debugger/src/index.js')
+        return (url.includes(this._PROJECT_ROOT) &&
+            !url.includes('/node_modules/')) ||
+            url.includes('/node_modules/lambda-debugger/src/index.js')
     }
 
-    getPossibleBreakpoints(scriptId, startLine, endLine){
-        this._ws.send(this._createPayload({
-            id: this.messagesCodeNameSpace.GET_POSSIBLE_BREAKPOINTS,
-            method: 'Debugger.getPossibleBreakpoints',
-            params: {
-                start: {
-                    scriptId, lineNumber: startLine
-                },
-                end: {
-                    scriptId, lineNumber: endLine
-                }
-            }
-        }))
-
-        return this._attachTemporaryResponseEvent(data => {
-            return data.id === this.messagesCodeNameSpace.GET_POSSIBLE_BREAKPOINTS
-        })
-    }
-
-    _getLineNumber(callFrame){
+    _getLineNumber(callFrame) {
         return callFrame.location.lineNumber
     }
 
     _filterLocalScopeChain(callFrame) {
         return callFrame
             .scopeChain
-            .filter(sc => sc.type === 'local' || sc.type === 'block' || sc.type === 'closure' )
+            .filter(sc => sc.type === 'local' || sc.type === 'block' || sc.type === 'closure')
     }
 
-    _getFileNameFromPath(callFrame){
+    _getFileNameFromPath(callFrame) {
         const split = callFrame.url.split('/');
         return split.slice(-1)[0]
     }
 
-    _getStackKey(callFrame){
+    _getStackKey(callFrame) {
         const currentLineNumber = this._getLineNumber(callFrame)
         const functionName = callFrame.functionName
         const fileName = this._getFileNameFromPath(callFrame)
@@ -236,13 +236,13 @@ class DebuggerAPI {
 
     // Check if the current executed call is an internal file.
     // We do not record these events so we want to skip them
-    _isTopOfTheStackInternal(callFrame){
+    _isTopOfTheStackInternal(callFrame) {
         const callFrameId = JSON.parse(callFrame.callFrameId)
         // ordinal is the stack order if 0 means that we are at the top
         return callFrameId.ordinal === 0 && !this._shouldBeTracked(callFrame.url)
     }
 
-    _initStackFrame(stack, callFrame){
+    _initStackFrame(stack, callFrame) {
         stack[this._getStackKey(callFrame)] = {
             meta: {
                 current: this._getLineNumber(callFrame),
@@ -254,11 +254,11 @@ class DebuggerAPI {
         }
     }
 
-    _buildObjectTypes(obj){
+    _buildObjectTypes(obj) {
         const finalObject = {}
         const properties = obj.result.result
         for (const property of properties) {
-            if (property.isOwn){
+            if (property.isOwn) {
                 finalObject[property.name] = property.value && property.value.value
             }
         }
@@ -266,7 +266,7 @@ class DebuggerAPI {
         return finalObject
     }
 
-    async getStackForCurrentStep(stepOver){
+    async getStackForCurrentStep(stepOver) {
         let stack = {};
         let pausedExecutionMeta;
         if (stepOver) {
@@ -278,7 +278,7 @@ class DebuggerAPI {
         for await (const callFrame of pausedExecutionMeta.params.callFrames) {
             // If the top of the stack is on an internal nodejs function
             // we will automatically step over the function call
-            if (this._isTopOfTheStackInternal(callFrame)){
+            if (this._isTopOfTheStackInternal(callFrame)) {
                 return this.getStackForCurrentStep(true)
             }
 
@@ -289,10 +289,11 @@ class DebuggerAPI {
             const localScopeChain = this._filterLocalScopeChain(callFrame)
 
             for await (const scope of localScopeChain) {
-                stack[this._getStackKey(callFrame)].meta.start = scope.startLocation.lineNumber
-                stack[this._getStackKey(callFrame)].meta.end = scope.endLocation.lineNumber
-                stack[this._getStackKey(callFrame)].meta.scriptId = scope.startLocation.scriptId
                 stack[this._getStackKey(callFrame)].meta.ordinal = callFrameId.ordinal
+                if (scope.type === 'local' && this._shouldBeTracked(callFrame.url)){
+                    stack[this._getStackKey(callFrame)].meta.startLine = scope.startLocation.lineNumber
+                    stack[this._getStackKey(callFrame)].meta.startColumn = scope.startLocation.columnNumber
+                }
 
                 const objectId = scope.object.objectId
                 const object = await this._getScopeChainObjects(objectId)

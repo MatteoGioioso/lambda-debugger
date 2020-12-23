@@ -1,5 +1,5 @@
 const {logger} = require("./logger");
-const { DebuggerAPI } = require("./DebuggerAPI");
+const {DebuggerAPI} = require("./DebuggerAPI");
 
 const {
     DEBUGGER_FULL_URL,
@@ -18,13 +18,18 @@ const recordExecution = async () => {
 process.on('beforeExit', async () => {
     try {
         logger('Start post processing')
-        process.send({executions, files: api.files}, () => {
-            // Send process is asynchronous therefore the child process must
-            // be closed after the full message has being sent
-            logger('Done sending')
-            api.terminateClient()
-            process.exit(0)
-        })
+        process.send({
+                executions,
+                files: api.files,
+                sourceMaps: api.sourceMaps
+            },
+            () => {
+                // Send process is asynchronous therefore the child process must
+                // be closed after the full message has being sent
+                logger('Done sending')
+                api.terminateClient()
+                process.exit(0)
+            })
     } catch (e) {
         logger(e.message, e.stack)
         process.exit(1)

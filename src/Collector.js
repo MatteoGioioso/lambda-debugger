@@ -31,7 +31,7 @@ class Collector {
         logger("/tmp directory is now empty")
     }
 
-    async injectDebuggerOutputIntoHtml(executions, files){
+    async injectDebuggerOutputIntoHtml(executions, files, sourceMaps){
         await fs.promises.mkdir(this.OUTPUT_PATH, { recursive: true })
         // Cut the custom runtime executions and hide it from the user
         // As long as the runtime does not change it's implementation the position
@@ -40,9 +40,11 @@ class Collector {
         const html = await fs.promises.readFile(path.join(__dirname, 'index.html'), 'utf8');
         const debugData = JSON.stringify(onlyFunctionsExecution, null, 2)
         const filesData = JSON.stringify(files, null, 2)
+        const sourceMapsData = JSON.stringify(sourceMaps, null, 2)
         const newHtml = html
             .replace('//---DEBUG.JSON---//', debugData)
             .replace('//---FILES.JSON---//', filesData)
+            .replace('//---SOURCE_MAPS--//', sourceMapsData)
 
         await fs.promises.writeFile(path.join(this.OUTPUT_PATH, '/index.html'), newHtml)
     }

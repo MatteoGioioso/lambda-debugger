@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Debugger</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/solarized-dark.min.css">
+	<meta charset="UTF-8">
+	<title>Debugger</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+	<link rel="stylesheet"
+		  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/solarized-dark.min.css">
 
-    <style>
+	<style>
         html {
             background: darkgrey;
         }
+
         pre {
             padding: 0;
             background: white;
         }
 
-        .tile.is-parent{
+        .tile.is-parent {
             padding: 1px;
         }
 
@@ -50,91 +51,100 @@
             max-height: 50px !important;
         }
 
-    </style>
+	</style>
 </head>
 <body>
 <section class="section">
-    <div class="tile is-ancestor">
-        <div class="tile is-vertical is-12">
-            <div class="tile is-parent">
-                <article class="tile is-child">
-                    <nav class="navbar" role="navigation" aria-label="main navigation">
-                        <div class="navbar-brand">
-                            <a class="navbar-item" href="https://github.com/MatteoGioioso/lambda-debugger">
-                                <img class="logo" src="https://imgpile.com/images/7IgDnM.png">
-                            </a>
+	<div class="tile is-ancestor">
+		<div class="tile is-vertical is-12">
+			<div class="tile is-parent">
+				<article class="tile is-child">
+					<nav class="navbar" role="navigation" aria-label="main navigation">
+						<div class="navbar-brand">
+							<a class="navbar-item" href="https://github.com/MatteoGioioso/lambda-debugger">
+								<img class="logo" src="https://imgpile.com/images/7IgDnM.png">
+							</a>
 
-                            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                                <span aria-hidden="true"></span>
-                                <span aria-hidden="true"></span>
-                                <span aria-hidden="true"></span>
-                            </a>
-                        </div>
+							<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+							   data-target="navbarBasicExample">
+								<span aria-hidden="true"></span>
+								<span aria-hidden="true"></span>
+								<span aria-hidden="true"></span>
+							</a>
+						</div>
 
-                        <div id="navbarBasicExample" class="navbar-menu">
-                            <div class="navbar-start">
-                                <a class="navbar-item arrow-backward">
-                                    <-
-                                </a>
+						<div id="navbarBasicExample" class="navbar-menu">
+							<div class="navbar-start">
+								<a class="navbar-item arrow-backward">
+									<-
+								</a>
 
-                                <a class="navbar-item arrow-forward">
-                                    ->
-                                </a>
-                            </div>
-                        </div>
+								<a class="navbar-item arrow-forward">
+									->
+								</a>
+							</div>
+						</div>
 
-                    </nav>
-                </article>
-            </div>
-            <div class="tile">
-                <div class="tile is-parent is-vertical is-7">
-                    <article class="tile is-child">
+					</nav>
+				</article>
+			</div>
+			<div class="tile">
+				<div class="tile is-parent is-vertical is-7">
+					<article class="tile is-child">
                         <pre class="code-window">
                             <code data-code="code-window" class="javascript"></code>
                         </pre>
-                    </article>
-                </div>
-                <div class="tile is-parent is-vertical is-5">
-                    <article class="tile is-child">
+					</article>
+				</div>
+				<div class="tile is-parent is-vertical is-5">
+					<article class="tile is-child">
                         <pre class="variables-window">
                             <code data-code="variables-window" class="javascript"></code>
                         </pre>
-                    </article>
-                </div>
+					</article>
+				</div>
 
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 
 </section>
 
 </body>
 
 <script type="application/json" id="debug.json">
-    //---DEBUG.JSON---//
+	//---DEBUG.JSON---//
 </script>
 
 <script type="application/json" id="files.json">
-    //---FILES.JSON---//
+	//---FILES.JSON---//
+</script>
+
+<script type="application/json" id="source-maps.json">
+	//---SOURCE_MAPS--//
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
-
+<script src="https://unpkg.com/source-map@0.7.3/dist/source-map.js"></script>
 <script>
     let executionCounter = 0;
+    const sourceMap = window.sourceMap;
+    sourceMap.SourceMapConsumer.initialize({
+        "lib/mappings.wasm": "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm"
+    });
 
-    function findCurrentExecution(wholeStack){
+    function findCurrentExecution(wholeStack) {
         const stack = wholeStack[executionCounter]
         for (const stackKey in stack) {
             const execution = stack[stackKey]
-            if (execution.meta.ordinal === 0){
+            if (execution.meta.ordinal === 0) {
                 return execution
             }
         }
     }
 
-    function setCode(code){
+    function setCode(code) {
         document.querySelector('[data-code="code-window"]').innerHTML = code.code
     }
 
@@ -143,7 +153,7 @@
         document.querySelector('[data-code="variables-window"]').innerHTML = variables
     }
 
-    function refreshHighlight(){
+    function refreshHighlight() {
         document.querySelectorAll('pre code').forEach((block) => {
             hljs.highlightBlock(block);
         });
@@ -156,7 +166,7 @@
         // line count starts at 0
         const currentLine = currentExecution.meta.current + 1
         const element = document.querySelector(`[data-line-number="${currentLine}"]`)
-        if (!element){
+        if (!element) {
             return;
         }
 
@@ -164,10 +174,24 @@
         element.parentNode.style.backgroundColor = 'beige'
     }
 
-    function renderStep(wholeStack, files){
+    async function renderStep(wholeStack, files, sourceMapsData) {
         const currentExecution = findCurrentExecution(wholeStack)
-        const code = files[currentExecution.file]
-        setCode(code)
+        let file = files[currentExecution.file]
+        if (file.sourceMapURL) {
+            const sourceMapFile = sourceMapsData[file.sourceMapURL]
+            const consumer = await new sourceMap.SourceMapConsumer(sourceMapFile.code, null)
+            const original = consumer.originalPositionFor({
+                line: currentExecution.meta.current + 1,
+                column: currentExecution.meta.column,
+            })
+            console.log(original)
+            const sourceCode = consumer.sourceContentFor(original.source)
+            file = {code: sourceCode}
+            currentExecution.meta.current = original.line
+            consumer.destroy();
+        }
+
+        setCode(file)
         setVariables(currentExecution)
         refreshHighlight()
         // There is an async process with hljs line numbers, so we need to
@@ -175,7 +199,7 @@
         setTimeout(() => highlightCurrentLine(currentExecution), 0)
     }
 
-    function forwardArrow(wholeStack, files){
+    function forwardArrow(wholeStack, files) {
         const arrowForward = document.querySelector('.arrow-forward');
         arrowForward.addEventListener('click', (e) => {
             executionCounter++
@@ -183,7 +207,7 @@
         })
     }
 
-    function backwardArrow(wholeStack, files){
+    function backwardArrow(wholeStack, files) {
         const arrowForward = document.querySelector('.arrow-backward');
         arrowForward.addEventListener('click', (e) => {
             executionCounter--
@@ -193,9 +217,12 @@
 
     const debugData = JSON.parse(document.getElementById('debug.json').innerHTML);
     const filesData = JSON.parse(document.getElementById('files.json').innerHTML);
+    const sourceMapsData = JSON.parse(document.getElementById('source-maps.json').innerHTML)
     forwardArrow(debugData, filesData)
     backwardArrow(debugData, filesData)
-    renderStep(debugData, filesData)
+    renderStep(debugData, filesData, sourceMapsData).then(l => {
+        console.log(l)
+    })
 
 </script>
 </html>
