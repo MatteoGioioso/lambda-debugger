@@ -1,0 +1,21 @@
+service: sls-webpack-bug
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+
+package:
+  individually: true
+
+plugins:
+  - serverless-webpack
+
+functions:
+  exampleFunction:
+    memorySize: 1024
+    timeout: 30
+    handler: index.handler

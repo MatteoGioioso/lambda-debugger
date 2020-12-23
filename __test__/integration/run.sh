@@ -6,7 +6,7 @@ function cleanUp() {
 
 function linkModule() {
   (cd ../../ && npm link) &&
-  (cd testFunction && npm link lambda-debugger)
+  (cd "$1" && npm link lambda-debugger)
 }
 
 # Run inside this folder
@@ -18,7 +18,16 @@ export LAMBDA_TASK_ROOT=$SCRIPT_PATH/testFunction
 export LAMBDA_DEBUGGER_OUTPUT=../$SCRIPT_PATH/tmp
 export LAMBDA_DEBUGGER_DEBUG=ALL
 
-linkModule &&
+linkModule testFunction &&
 node --preserve-symlinks "${SCRIPT_PATH}"/lambdaDebugger.test.js
 
+
+export AWS_LAMBDA_FUNCTION_NAME=testFunctionSourceMap
+export LAMBDA_TASK_ROOT=$SCRIPT_PATH/testFunctionSourceMap
+export LAMBDA_DEBUGGER_OUTPUT=../$SCRIPT_PATH/tmp
+
+
+linkModule testFunctionSourceMap &&
+sls
+node --preserve-symlinks "${SCRIPT_PATH}"/lambdaDebuggerSourceMap.test.js
 #trap cleanUp EXIT
