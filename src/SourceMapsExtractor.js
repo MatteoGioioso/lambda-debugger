@@ -1,24 +1,50 @@
 const fs = require('fs')
-const path = require('path')
+const convert = require('convert-source-map');
 const SourceMapConsumer = require('source-map').SourceMapConsumer
 
 class SourceMapsExtractor {
-    constructor(sourceMapsFile) {
-        this._sourceMapsFile = sourceMapsFile
-        this._sourceMapsFileContent = null
-    }
-
-    async loadFromFile() {
-        const data = await fs
+    static async loadFromFile(sourceMapsFileUrl) {
+        return await fs
             .promises
-            .readFile(this._sourceMapsFile, 'utf8')
-        this._sourceMapsFileContent = data
-        return data
+            .readFile(sourceMapsFileUrl, 'utf8')
     }
 
-    async getSourceOriginalSourceCodeForFile(){
-        const consumer = await new SourceMapConsumer(this._sourceMapsFileContent);
+    static async loadFromBase64(inlineSourceMapBase64){
+        const sourceMapsBase64 = inlineSourceMapBase64
+            .replace('data:application/json;charset=utf-8;base64,', '')
+        return convert.fromBase64(sourceMapsBase64).toJSON();
+    }
+
+    static async getOriginalFileSourceCode(sourceScriptUrl, sourceMapContent){
+        const url = sourceScriptUrl.replace('file://', '')
+        const consumer = await new SourceMapConsumer(sourceMapContent, null);
+        const originalSource = consumer.sourceContentFor(url);
+        consumer.destroy()
+        return originalSource
+    }
+
+    static async getOptimalLocation(location, sourceMapContent) {
+        const consumer = await new SourceMapConsumer(sourceMapContent, null);
+        const original = consumer.originalPositionFor({
+            line: location.line,
+            column: location.column,
+            bias: SourceMapConsumer.GREATEST_LOWER_BOUND
+        })
+        if (original.line !== null){
+            return original
+        }
+
+        const leastOriginal = consumer.originalPositionFor({
+            line: location.line,
+            column: location.column,
+            bias: SourceMapConsumer.LEAST_UPPER_BOUND
+        })
 
         consumer.destroy()
+        return leastOriginal
     }
+}
+
+module.exports = {
+    SourceMapsExtractor
 }

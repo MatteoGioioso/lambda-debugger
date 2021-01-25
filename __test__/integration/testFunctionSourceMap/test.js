@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-const {handler} = require("./.serverless/index");
+// const {handler} = require("./.serverless/index");
+const {handler} = require("./index");
 const jsdom = require("jsdom");
 const _ = require('lodash');
 const {JSDOM} = jsdom;

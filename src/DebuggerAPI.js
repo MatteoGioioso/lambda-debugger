@@ -1,6 +1,5 @@
 const WebSocket = require('ws');
-const fs = require('fs');
-const path = require('path')
+const {SourceMapsExtractor} = require("./SourceMapsExtractor");
 const {logger} = require("./logger");
 
 class DebuggerAPI {
@@ -30,9 +29,12 @@ class DebuggerAPI {
             GET_POSSIBLE_BREAKPOINTS: 18,
             STEP_OUT: 19,
             AWAIT_PROMISE: 20,
-            ENABLE_ASYNC_TRACKING: 21
+            ENABLE_ASYNC_TRACKING: 21,
+            SET_SCRIPT_SOURCE: 22,
+            PAUSE: 23,
+            INSTRUMENTATION_BREAKPOINT: 24
         }
-
+        this._instrBrk = false
         logger(this._PROJECT_ROOT)
     }
 
@@ -74,6 +76,59 @@ class DebuggerAPI {
         })
     }
 
+    async _setScriptSource(scriptId, scriptSource) {
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.SET_SCRIPT_SOURCE)
+        this._ws.send(this._createPayload({
+            method: 'Debugger.setScriptSource',
+            params: {
+                scriptId, scriptSource
+            },
+            id
+        }))
+        return this._attachTemporaryResponseEvent((data) => {
+            if (data.id === id){
+                console.log(data)
+            }
+            return data.id === id
+        })
+    }
+
+    async setInstrumentationBreakpoint(){
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.INSTRUMENTATION_BREAKPOINT)
+        this._ws.send(this._createPayload({
+            method: 'Debugger.setInstrumentationBreakpoint',
+            params: {
+              instrumentation: 'beforeScriptWithSourceMapExecution'
+            },
+            id
+        }))
+        return this._attachTemporaryResponseEvent((data) => {
+            return data.id === id
+        })
+    }
+
+    async pause(){
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.PAUSE)
+        this._ws.send(this._createPayload({
+            method: 'Debugger.pause',
+            id
+        }))
+        return this._attachTemporaryResponseEvent((data) => {
+            return data.id === id
+        })
+    }
+
+    async resume(){
+        const id = this._generateBigIntId(this.messagesCodeNameSpace.RESUME)
+        this._ws.send(this._createPayload({
+            method: 'Debugger.resume',
+            id
+        }))
+        return this._attachTemporaryResponseEvent((data) => {
+            return data.id === id
+        })
+    }
+
     // This is an event listener
     collectSourceCode() {
         const eventListener = async (buffer) => {
@@ -92,14 +147,18 @@ class DebuggerAPI {
                     this._files[currentFileKey].hasSourceURL = data.params.hasSourceURL
                     this._files[currentFileKey].hasCode = true
 
-                    if (!this._sourceMaps[sourceMapUrl] && sourceMapUrl) {
-                        logger(sourceMapUrl)
-                        const data = await fs
-                            .promises
-                            .readFile(path.join('.serverless', sourceMapUrl), 'utf8')
+                    if (sourceMapUrl) {
+                        const jsonSourceMaps = await SourceMapsExtractor.loadFromBase64(sourceMapUrl)
+                        const originalSource = await SourceMapsExtractor.getOriginalFileSourceCode(currentFileKey, jsonSourceMaps)
+                        // this._files[currentFileKey].code = originalSource
+                        // if (!this._instrBrk){
+                        //     await this.setInstrumentationBreakpoint()
+                        //     this._instrBrk = true
+                        // }
                         this._sourceMaps[sourceMapUrl] = {}
-                        this._sourceMaps[sourceMapUrl].code = data
+                        this._sourceMaps[sourceMapUrl].code = jsonSourceMaps
                         this._sourceMaps[sourceMapUrl].hasCode = true
+                        this._setScriptSource(data.params.scriptId, originalSource)
                     }
                 }
             }
@@ -213,7 +272,20 @@ class DebuggerAPI {
     }
 
     _getLineNumber(callFrame) {
+        // if (callFrame.functionName){
+        //     return callFrame.functionLocation.lineNumber
+        // }
+
         return callFrame.location.lineNumber
+
+    }
+
+    _getColumnNumber(callFrame){
+        // if (callFrame.functionName){
+        //     return callFrame.functionLocation.columnNumber
+        // }
+
+        return callFrame.location.columnNumber
     }
 
     _filterLocalScopeChain(callFrame) {
@@ -245,7 +317,10 @@ class DebuggerAPI {
     _initStackFrame(stack, callFrame) {
         stack[this._getStackKey(callFrame)] = {
             meta: {
-                current: this._getLineNumber(callFrame),
+                currentPosition: {
+                    line: this._getLineNumber(callFrame),
+                    column: this._getColumnNumber(callFrame)
+                },
             },
             file: callFrame.url,
             local: {
@@ -290,10 +365,6 @@ class DebuggerAPI {
 
             for await (const scope of localScopeChain) {
                 stack[this._getStackKey(callFrame)].meta.ordinal = callFrameId.ordinal
-                if (scope.type === 'local' && this._shouldBeTracked(callFrame.url)){
-                    stack[this._getStackKey(callFrame)].meta.startLine = scope.startLocation.lineNumber
-                    stack[this._getStackKey(callFrame)].meta.startColumn = scope.startLocation.columnNumber
-                }
 
                 const objectId = scope.object.objectId
                 const object = await this._getScopeChainObjects(objectId)

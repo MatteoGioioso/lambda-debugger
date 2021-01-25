@@ -1,24 +1,32 @@
-export const myObject = {
+const myObject = {
     name: 'matteo',
     age: 36,
 }
 
-export function internal() {
+function internal() {
     let int = 3
     return 3 * int
 }
 
-export function buildObject(obj) {
+function buildObject(obj) {
     obj.anotherProperty = 3
 }
 
-export function add(subFirstNumber, subSecondNumber) {
+function add(subFirstNumber, subSecondNumber) {
     const {age} = myObject;
     internal()
     return subFirstNumber + subSecondNumber + age
 }
 
-export function multiply(total, multiplier) {
+function multiply(total, multiplier) {
     const result = total * multiplier
     return result
+}
+
+module.exports = {
+    myObject,
+    internal,
+    buildObject,
+    add,
+    multiply
 }

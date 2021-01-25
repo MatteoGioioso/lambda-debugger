@@ -1,6 +1,7 @@
 const {logger} = require("./logger");
 const {DebuggerAPI} = require("./DebuggerAPI");
-
+const {promisify} = require('util')
+const sleep = promisify(setTimeout)
 const {
     DEBUGGER_FULL_URL,
     START_LINE
@@ -41,11 +42,13 @@ process.on('beforeExit', async () => {
     await api.initClient()
     api.collectSourceCode()
     const scriptInfo = await api.enable();
+    logger('Setting breakpoint')
     await api.setBreakpoint(
         Number(START_LINE) - 1, // this could be arbitrarily set depending on the final code
         scriptInfo.params.scriptId
     )
     process.send('brokerConnect');
+    logger('Start record execution')
     await recordExecution()
 })();
 

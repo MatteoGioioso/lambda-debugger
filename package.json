@@ -1,6 +1,6 @@
 {
   "name": "lambda-debugger",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Time travel offline debugging for your Nodejs Lambda function",
   "main": "src/index.js",
   "scripts": {
@@ -19,6 +19,8 @@
   "homepage": "https://github.com/MatteoGioioso/lambda-debugger#readme",
   "dependencies": {
     "aws-sdk": "^2.803.0",
+    "convert-source-map": "^1.7.0",
+    "source-map": "^0.7.3",
     "ws": "^7.4.1"
   },
   "devDependencies": {

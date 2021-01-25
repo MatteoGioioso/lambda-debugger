@@ -174,20 +174,34 @@
         element.parentNode.style.backgroundColor = 'beige'
     }
 
+    function getOptimalLocation(consumer, location) {
+        const original = consumer.originalPositionFor({
+            line: location.line,
+            column: location.column,
+            bias: sourceMap.SourceMapConsumer.GREATEST_LOWER_BOUND
+        })
+        if (original.line !== null){
+            return original
+        }
+
+        return consumer.originalPositionFor({
+            line: location.line,
+            column: location.column,
+            bias: sourceMap.SourceMapConsumer.LEAST_UPPER_BOUND
+        })
+    }
+
     async function renderStep(wholeStack, files, sourceMapsData) {
         const currentExecution = findCurrentExecution(wholeStack)
         let file = files[currentExecution.file]
         if (file.sourceMapURL) {
             const sourceMapFile = sourceMapsData[file.sourceMapURL]
             const consumer = await new sourceMap.SourceMapConsumer(sourceMapFile.code, null)
-            const original = consumer.originalPositionFor({
-                line: currentExecution.meta.current + 1,
-                column: currentExecution.meta.column,
-            })
-            console.log(original)
-            const sourceCode = consumer.sourceContentFor(original.source)
+			const optimalLocation = getOptimalLocation(consumer, currentExecution.meta.currentPosition);
+            console.log(optimalLocation)
+            const sourceCode = consumer.sourceContentFor(optimalLocation.source)
             file = {code: sourceCode}
-            currentExecution.meta.current = original.line
+            currentExecution.meta.current = optimalLocation.line - 1
             consumer.destroy();
         }
 
@@ -199,27 +213,27 @@
         setTimeout(() => highlightCurrentLine(currentExecution), 0)
     }
 
-    function forwardArrow(wholeStack, files) {
+    function forwardArrow(wholeStack, files, sourceMapsData) {
         const arrowForward = document.querySelector('.arrow-forward');
         arrowForward.addEventListener('click', (e) => {
             executionCounter++
-            renderStep(wholeStack, files)
+            renderStep(wholeStack, files, sourceMapsData)
         })
     }
 
-    function backwardArrow(wholeStack, files) {
+    function backwardArrow(wholeStack, files, sourceMapsData) {
         const arrowForward = document.querySelector('.arrow-backward');
         arrowForward.addEventListener('click', (e) => {
             executionCounter--
-            renderStep(wholeStack, files)
+            renderStep(wholeStack, files, sourceMapsData)
         })
     }
 
     const debugData = JSON.parse(document.getElementById('debug.json').innerHTML);
     const filesData = JSON.parse(document.getElementById('files.json').innerHTML);
     const sourceMapsData = JSON.parse(document.getElementById('source-maps.json').innerHTML)
-    forwardArrow(debugData, filesData)
-    backwardArrow(debugData, filesData)
+    forwardArrow(debugData, filesData, sourceMapsData)
+    backwardArrow(debugData, filesData, sourceMapsData)
     renderStep(debugData, filesData, sourceMapsData).then(l => {
         console.log(l)
     })

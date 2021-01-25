@@ -20,6 +20,6 @@ export LAMBDA_TASK_ROOT=$SCRIPT_PATH
 
 
 linkModule &&
-sls package && unzip .serverless/exampleFunction.zip -d .serverless
-node --preserve-symlinks test.js
+#SLS_DEBUG=* sls package && unzip .serverless/exampleFunction.zip -d .serverless
+node --preserve-symlinks pre-test.js
 
