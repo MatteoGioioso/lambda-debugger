@@ -7,7 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +19,11 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
     "@babel/register": "^7.12.10"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "babel-loader": "^8.2.2",
+    "webpack": "^5.17.0",
+    "webpack-cli": "^4.4.0"
   }
 }

@@ -1,5 +1,5 @@
-const {add, buildObject, multiply, myObject} = require("./lib/myFunctions")
-const lambdaDebugger = require('lambda-debugger')
+import {add, buildObject, multiply, myObject} from "./lib/myFunctions"
+import lambdaDebugger from 'lambda-debugger'
 
 function myPromise() {
     return Promise.resolve(20)

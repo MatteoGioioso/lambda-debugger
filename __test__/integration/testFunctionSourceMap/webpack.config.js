@@ -1,12 +1,11 @@
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
-const slsw = require('serverless-webpack');
+// const nodeExternals = require('webpack-node-externals');
+// const slsw = require('serverless-webpack');
 
 module.exports = {
-    entry: slsw.lib.entries,
+    entry: './test.js',
     target: 'node',
     devtool: 'source-map',
-    externals: [nodeExternals()],
     module: {
         rules: [
             {
@@ -23,9 +22,8 @@ module.exports = {
         ],
     },
     output: {
-        libraryTarget: 'commonjs2',
-        path: path.join(__dirname, '.webpack'),
-        filename: '[name].js',
-        sourceMapFilename: '[file].map',
+        path: path.join(__dirname, 'dist'),
+        filename: 'test.js',
+        sourceMapFilename: 'test.map',
     }
 };

@@ -175,8 +175,8 @@
     }
 
     function getOptimalLocation(consumer, location) {
-        const original = consumer.originalPositionFor({
-            line: location.line,
+        let original = consumer.originalPositionFor({
+            line: location.line + 1,
             column: location.column,
             bias: sourceMap.SourceMapConsumer.GREATEST_LOWER_BOUND
         })
@@ -184,11 +184,13 @@
             return original
         }
 
-        return consumer.originalPositionFor({
-            line: location.line,
+        original =  consumer.originalPositionFor({
+            line: location.line - 1,
             column: location.column,
             bias: sourceMap.SourceMapConsumer.LEAST_UPPER_BOUND
         })
+
+        return original
     }
 
     async function renderStep(wholeStack, files, sourceMapsData) {
