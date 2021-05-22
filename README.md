@@ -6,6 +6,11 @@ Lambda debugger records all your function
 execution, so you can replay it at a later time.
 Stop scattering your code with `console.log`.
 
+![img.png](docs/img.png)
+
+### Example
+Download this html file and open it with chrome: [debugger.html](docs/index.html)
+
 ## Installation
 
 ```bash
@@ -29,5 +34,7 @@ exports.handler = lambdaDebugger((event, context,callback) => {
 ## Roadmap
 
 - Support source maps for javascript
+
+---
 
 ### Currently under development
