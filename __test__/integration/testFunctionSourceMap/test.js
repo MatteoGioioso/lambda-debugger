@@ -1,4 +1,16 @@
-const {handler} = require("./index");
+// require('@babel/register')({
+//     presets: [
+//         [
+//             "@babel/preset-env",
+//             {
+//                 targets: {
+//                     node: "current"
+//                 }
+//             }
+//         ]
+//     ]
+// });
+import {handler} from "./index.js";
 
 (async function () {
     const event = {

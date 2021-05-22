@@ -1,11 +1,11 @@
-import {add, buildObject, multiply, myObject} from "./lib/myFunctions"
+import {add, buildObject, multiply, myObject} from "./lib/myFunctions.js"
 import lambdaDebugger from 'lambda-debugger'
 
 function myPromise() {
     return Promise.resolve(20)
 }
 
-async function handler(event, context) {
+const handler1 = async (event, context) => {
     try {
         const firstNumber = 3
         const secondNumber = 6
@@ -29,5 +29,7 @@ async function handler(event, context) {
     }
 }
 
-exports.handler = lambdaDebugger(handler)
+export const handler = lambdaDebugger(handler1)
+
+// exports.handler = lambdaDebugger(handler)
 

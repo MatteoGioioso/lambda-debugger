@@ -164,7 +164,7 @@
 
     function highlightCurrentLine(currentExecution) {
         // line count starts at 0
-        const currentLine = currentExecution.meta.current + 1
+        const currentLine = currentExecution.meta.currentPosition.line + 1
         const element = document.querySelector(`[data-line-number="${currentLine}"]`)
         if (!element) {
             return;
@@ -200,7 +200,6 @@
             const sourceMapFile = sourceMapsData[file.sourceMapURL]
             const consumer = await new sourceMap.SourceMapConsumer(sourceMapFile.code, null)
 			const optimalLocation = getOptimalLocation(consumer, currentExecution.meta.currentPosition);
-            console.log(optimalLocation)
             const sourceCode = consumer.sourceContentFor(optimalLocation.source)
             file = {code: sourceCode}
             currentExecution.meta.current = optimalLocation.line - 1

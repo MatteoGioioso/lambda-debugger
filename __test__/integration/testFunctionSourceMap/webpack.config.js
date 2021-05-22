@@ -1,11 +1,15 @@
 const path = require('path');
 // const nodeExternals = require('webpack-node-externals');
-// const slsw = require('serverless-webpack');
+const slsw = require('serverless-webpack');
+const { ThundraWebpackPlugin } = require('@thundra/webpack-plugin');
 
 module.exports = {
-    entry: './test.js',
+    entry: slsw.lib.entries,
     target: 'node',
     devtool: 'source-map',
+    plugins: [new ThundraWebpackPlugin([
+        'index.handler*[traceArgs=true,traceReturnValue=true,traceLineByLine=true]',
+    ])],
     module: {
         rules: [
             {
@@ -22,8 +26,9 @@ module.exports = {
         ],
     },
     output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'test.js',
-        sourceMapFilename: 'test.map',
-    }
+        libraryTarget: 'commonjs2',
+        path: path.join(__dirname, '.webpack'),
+        filename: '[name].js',
+        sourceMapFilename: '[file].map',
+    },
 };

@@ -4,23 +4,21 @@ provider:
   name: aws
   runtime: nodejs12.x
 
-#custom:
-#  webpack:
-#    webpackConfig: ./webpack.config.js
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
 
 package:
   individually: true
-  exclude:
-    - "**"
+#  exclude:
+#    - "**"
 
-#plugins:
-#  - serverless-webpack
+plugins:
+#  - serverless-plugin-thundra
+  - serverless-webpack
 
 functions:
   exampleFunction:
     memorySize: 1024
     timeout: 30
     handler: index.handler
-    include:
-      - index.js
-      - lib/**
